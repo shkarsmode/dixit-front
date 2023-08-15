@@ -1,0 +1,12 @@
+.wrap {
+	width: 250px;
+	border-radius: 8px;
+	overflow: hidden;
+	height: 320px;
+}
+
+img {
+	width: 100%;
+	object-fit: contain;
+	pointer-events: none;
+}

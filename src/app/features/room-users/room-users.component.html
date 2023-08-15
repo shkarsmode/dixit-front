@@ -1,0 +1,19 @@
+<div class="wrap-users">
+	<table>
+		<tr>
+			<th>Score</th>
+			<th>Nickname</th>
+		</tr>
+		<tr 
+			[class]="'user ' + user.color" 
+			*ngFor="let user of users">
+			<td>{{ user.score }}</td>
+			<td>{{ user.username }}</td>
+			<div class="mark" *ngIf="user.isHeader">
+				<span class="material-symbols-outlined">
+					flag
+				</span>
+			</div>
+		</tr>
+	</table>
+</div>

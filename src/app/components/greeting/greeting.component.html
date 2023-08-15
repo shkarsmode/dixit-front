@@ -1,0 +1,159 @@
+<!-- <div class="wrap">
+	Current user <strong>{{ username }}</strong>
+
+	<hr>
+
+	<button
+		activeCursor 
+		(click)="createRoom()" 
+		mat-raised-button>
+		Create room
+	</button>
+
+	<form>
+		<mat-form-field>
+			<mat-label>Room code</mat-label>
+			<input
+				activeCursor
+				matInput 
+				type="text" 
+				name="roomcode" 
+				[(ngModel)]="roomCode">
+		</mat-form-field>
+		<button
+			activeCursor 
+			(click)="joinRoom()" 
+			type="submit" 
+			mat-raised-button>
+			
+			Join Room
+		</button>
+	</form>
+</div> -->
+
+<div 
+	id="choix_univers_pc" 
+	class="desktop_version"
+	[ngClass]="{
+		'dixit': stateOfMovingSides === 'left', 
+		'mysterium': stateOfMovingSides === 'right'
+	}">
+	<div class="logo-header">
+		<img src="https://www.libellud.com/wp-content/themes/libellud-theme/images/dixit/logo_dixit.png" alt="Dixit">
+	</div>
+	<!-- univers dixit -->
+	<div class="fond_mysterium"></div>
+	<div class="tache tache1"></div>
+	<div class="tache tache2"></div>
+	<div class="tache tache3"></div>
+	<div class="tache tache4"></div>
+	<div class="tache tache5"></div>
+	<div class="tache tache6"></div>
+	<div class="tache tache7"></div>
+	<!-- univers mysterium -->
+	<div class="tachem tachem1"></div>
+	<div class="tachem tachem2"></div>
+	<div class="tachem tachem3"></div>
+	<div class="tachem tachem4"></div>
+	<div class="tachem tachem5"></div>
+	<div class="tachem tachem6"></div>
+	<div class="tachem tachem7"></div>
+   
+
+	<div class="conteneur">
+		<div class="deco deco-dixit">
+			<!-- <img src="data:image/svg+xml,%3Csvg%20xmlns='http://www.w3.org/2000/svg'%20viewBox='0%200%200%200'%3E%3C/svg%3E" alt="Dixit - Soleil" id="soleil" style="width:628px" data-lazy-src="https://www.libellud.com/wp-content/themes/libellud-theme/images/dixit/soleil.png"><noscript><img src="https://www.libellud.com/wp-content/themes/libellud-theme/images/dixit/soleil.png" alt="Dixit - Soleil" id="soleil" style="width:628px"></noscript> -->
+			<img width="510" height="530" src="https://www.libellud.com/wp-content/themes/libellud-theme/images/dixit/chateau-pc.png" alt="Dixit - Chateau" id="chateau" style="width:510px" data-lazy-src="https://www.libellud.com/wp-content/themes/libellud-theme/images/dixit/chateau-pc.png" data-ll-status="loaded" class="entered lazyloaded"><noscript><img width="510" height="530" src="https://www.libellud.com/wp-content/themes/libellud-theme/images/dixit/chateau-pc.png" alt="Dixit - Chateau" id="chateau" style="width:510px"></noscript>
+			<div #bateau id="bateau"><img width="640" height="420" src="https://www.libellud.com/wp-content/themes/libellud-theme/images/dixit/bateau.png" alt="Dixit - Bateau" class="bateau entered lazyloaded" style="width: 640px; transform: matrix(1, 0, 0, 1, -1.53705, 20.1136);" data-lazy-src="https://www.libellud.com/wp-content/themes/libellud-theme/images/dixit/bateau.png" data-ll-status="loaded"><noscript><img width="640" height="420" src="https://www.libellud.com/wp-content/themes/libellud-theme/images/dixit/bateau.png" alt="Dixit - Bateau" class="bateau" style="width:640px"></noscript></div>
+			<img width="206" height="312" src="data:image/svg+xml,%3Csvg%20xmlns='http://www.w3.org/2000/svg'%20viewBox='0%200%20206%20312'%3E%3C/svg%3E" alt="Dixit - Fillette" id="fillette" style="width:206px" data-lazy-src="https://www.libellud.com/wp-content/themes/libellud-theme/images/dixit/perso_dixit.png"><noscript><img width="206" height="312" src="https://www.libellud.com/wp-content/themes/libellud-theme/images/dixit/perso_dixit.png" alt="Dixit - Fillette" id="fillette" style="width:206px"></noscript>
+			<div id="persstella" #persstella><img width="536" height="596" src="https://www.libellud.com/wp-content/themes/libellud-theme/images/dixit/stella.png" alt="Dixit - Stella" class="persstella entered lazyloaded" style="width: 536px; transform: matrix(1, 0, 0, 1, 2.15187, -28.1591);" data-lazy-src="https://www.libellud.com/wp-content/themes/libellud-theme/images/dixit/stella.png" data-ll-status="loaded"><noscript><img width="536" height="596" src="https://www.libellud.com/wp-content/themes/libellud-theme/images/dixit/stella.png" alt="Dixit - Stella" class="persstella" style="width:536px"></noscript></div>
+		</div>
+		<div class="deco deco-mysterium">
+			<img width="628" height="670" src="https://www.libellud.com/wp-content/themes/libellud-theme/images/mysterium/cartes.png" alt="Mysterium - Cartes" id="cartes" style="width:628px" data-lazy-src="https://www.libellud.com/wp-content/themes/libellud-theme/images/mysterium/cartes.png" data-ll-status="loaded" class="entered lazyloaded"><noscript><img width="628" height="670" src="https://www.libellud.com/wp-content/themes/libellud-theme/images/mysterium/cartes.png" alt="Mysterium - Cartes" id="cartes" style="width:628px"></noscript>
+			<div id="bonbons"><img width="160" height="166" src="data:image/svg+xml,%3Csvg%20xmlns='http://www.w3.org/2000/svg'%20viewBox='0%200%20160%20166'%3E%3C/svg%3E" alt="Mysterium - Bonbons" class="bonbons" style="width: 160px; transform: matrix(1, 0, 0, 1, 1.22964, -16.0909);" data-lazy-src="https://www.libellud.com/wp-content/themes/libellud-theme/images/mysterium/bonbons.png"><noscript><img width="160" height="166" src="https://www.libellud.com/wp-content/themes/libellud-theme/images/mysterium/bonbons.png" alt="Mysterium - Bonbons" class="bonbons" style="width:160px"></noscript></div>
+			<img width="364" height="498" src="https://www.libellud.com/wp-content/themes/libellud-theme/images/mysterium/popcorn.png" alt="Mysterium - PopCorn" id="popcorn" style="width:364px" data-lazy-src="https://www.libellud.com/wp-content/themes/libellud-theme/images/mysterium/popcorn.png" data-ll-status="loaded" class="entered lazyloaded"><noscript><img width="364" height="498" src="https://www.libellud.com/wp-content/themes/libellud-theme/images/mysterium/popcorn.png" alt="Mysterium - PopCorn" id="popcorn" style="width:364px"></noscript>
+			<div id="medium" #medium><img width="556" height="738" src="https://www.libellud.com/wp-content/themes/libellud-theme/images/mysterium/medium.png" alt="Mysterium - Medium" class="medium entered lazyloaded" style="width: 556px; transform: matrix(1, 0, 0, 1, -1.53705, 20.1136);" data-lazy-src="https://www.libellud.com/wp-content/themes/libellud-theme/images/mysterium/medium.png" data-ll-status="loaded"><noscript><img width="556" height="738" src="https://www.libellud.com/wp-content/themes/libellud-theme/images/mysterium/medium.png" alt="Mysterium - Medium" class="medium" style="width:556px"></noscript></div>
+			<div id="vase" #vase><img width="484" height="618" src="https://www.libellud.com/wp-content/themes/libellud-theme/images/mysterium/vase.png" alt="Mysterium - Vase" class="vase entered lazyloaded" style="width: 484px; transform: matrix(1, 0, 0, 1, 2.15187, -28.1591);" data-lazy-src="https://www.libellud.com/wp-content/themes/libellud-theme/images/mysterium/vase.png" data-ll-status="loaded"><noscript><img width="484" height="618" src="https://www.libellud.com/wp-content/themes/libellud-theme/images/mysterium/vase.png" alt="Mysterium - Vase" class="vase" style="width:484px"></noscript></div>
+		</div>
+	</div>
+	<div class="logo logo-dixit show">
+		<div class="contenue">
+
+			<h1>Create Room</h1>
+			<button
+				class="create-button"
+				activeCursor 
+				(click)="createRoom()" 
+				mat-raised-button>
+				Create room
+			</button>
+
+		</div>
+	</div>
+	<div class="logo logo-mysterium show">
+		<div class="contenue">
+			<h1>Invite Code</h1>
+			<form>
+				<div class="wrap-code">
+					<input 
+						activeCursor 
+						type="text" 
+						maxlength="1"
+						pattern="[a-zA-Z]"
+						(keydown)="onInputKeydown($event, 0)" 
+						#input1>
+					<input 
+						activeCursor 
+						type="text" 
+						maxlength="1"
+						pattern="[a-zA-Z]"
+						(keydown)="onInputKeydown($event, 1)" 
+						#input2>
+					<input 
+						activeCursor 
+						type="text" 
+						maxlength="1"
+						pattern="[a-zA-Z]"
+						(keydown)="onInputKeydown($event, 2)" 
+						#input3>
+					<input 
+						activeCursor 
+						type="text" 
+						maxlength="1"
+						pattern="[a-zA-Z]"
+						(keydown)="onInputKeydown($event, 3)" 
+						#input4>
+					<input 
+						activeCursor 
+						type="text" 
+						maxlength="1"
+						pattern="[a-zA-Z]"
+						(keydown)="onInputKeydown($event, 4)" 
+						#input5>
+				</div>
+				<!-- <mat-form-field>
+					<mat-label>Room code</mat-label>
+					<input
+						activeCursor
+						matInput 
+						type="text"
+						name="roomcode" 
+						[(ngModel)]="roomCode">
+				</mat-form-field> -->
+				<button
+					class="join-button"
+					activeCursor 
+					(click)="joinRoom()" 
+					type="submit" 
+					mat-raised-button>
+					Join Room
+				</button>
+			</form>
+		</div>
+	</div>
+	<div class="retour"><a href="javascript:;" class="bouton"><span>return</span></a></div>
+</div>
+
+<section>
+	<div class="fond"></div>
+</section>

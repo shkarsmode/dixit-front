@@ -1,0 +1,11 @@
+<div 
+	class="wrap" 
+	[ngClass]="{'cards-6': hand.length === 6, 'showing': isShowFirstCard}">
+	<app-card
+		activeCursor
+		*ngFor="let card of hand; index as i"
+		[card]="card"
+		(click)="choose(card)"
+		[style]="'--i:' + i">
+	</app-card>
+</div>

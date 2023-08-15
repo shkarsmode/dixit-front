@@ -1,0 +1,71 @@
+<div *ngIf="isWaitForHeader" class="wrap-association">
+	<h1>Wait while the admin comes up with an association</h1>
+</div>
+
+<div *ngIf="isChooseCard" class="wrap-association">
+	<h1>Choose card rely on this association</h1>
+	<b>{{ association }}</b>
+</div>
+
+<div *ngIf="isRotateCards && !isResults" class="wrap-association">
+	<h1 *ngIf="!isHeader">Vote for the map by clicking on it</h1>
+	<h1 *ngIf="isHeader">Wait for everyone to vote</h1>
+</div>
+
+<div *ngIf="isResults" class="wrap-association">
+	<h1 *ngIf="!isEmittedNextRound">Results</h1>
+	<button
+		*ngIf="!isEmittedNextRound" 
+		(click)="moveToNextRound()" 
+		activeCursor 
+		mat-raised-button>
+		Next Round
+	</button>
+	<h1 *ngIf="isEmittedNextRound">Wait for the rest...</h1>
+</div>
+
+<div class="wrap" [ngClass]="{'anim-desk': isRotateCards }">
+	<ng-template [ngIf]="!isRotateCards">
+		<div 
+			*ngFor="let card of cardsForBack"
+			class="card-container">
+			<div 
+				class="card stock">
+				<div class="front"></div>
+				<div class="back"></div>
+			</div>
+		</div>
+	</ng-template>
+
+	<ng-template [ngIf]="isRotateCards">
+		<div 
+			*ngFor="let card of cards; index as i"
+			class="card-container"
+			[ngClass]="{'admin-card': isHeaderCard(card)}"
+			#cardElement
+			(mouseup)="onMouseUp(cardElement, card)"
+			(mouseleave)="onMouseLeave(cardElement)"
+			(mousedown)="onMouseDown(cardElement)">
+			<div
+				class="card active"
+				activeCursor
+				[style]="'--i:'+ (+i - (0.3)*i) + 's'">
+				<div class="wrap-votes" *ngIf="results.length">
+					<ng-container *ngFor="let result of results">
+						<ng-template [ngIf]="result.card === card">
+							<div
+								*ngFor="let color of result.votes"
+								class="vote"
+								[ngClass]="color">
+							</div>
+						</ng-template>
+					</ng-container>
+				</div>
+				<div class="front">
+					<img [src]="pathToDixitCards + card + format" loading="eager">
+				</div>
+				<div class="back"></div>
+			</div>
+		</div>
+	</ng-template>
+</div>

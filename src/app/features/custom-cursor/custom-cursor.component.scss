@@ -1,0 +1,24 @@
+.cursor {
+	background-color: #38333e;
+    border: 3px solid #ffd894;
+    box-shadow: 0 3px 0 0 #ab9165, 0 3px 5px 0 #000, inset 0 2px 4px 0 #000;
+    width: 36px;
+    height: 36px;
+    border-radius: 0 50% 50%;
+    position: fixed;
+    z-index: 9999999999;
+    pointer-events: none;
+    opacity: 1;
+    transition: background-color 0.2s, transform 0.3s;
+    transform-origin: 0 0;
+
+	&.hover {
+		background-color: #01aad7;
+		transform: scale(.8) !important;
+	}
+}
+
+
+::ng-deep body:has(app-custom-cursor) {
+    cursor: none;
+}
