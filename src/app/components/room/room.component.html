@@ -39,7 +39,8 @@
 
 	<app-room-users 
 		*ngIf="users"
-		[users]="users">
+		[users]="users"
+		[isResults]="isResults">
 	</app-room-users>
 
 	<div *ngIf="isChooseCardAsAHeader" class="wrap-info-center">
