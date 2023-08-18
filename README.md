@@ -1,27 +1,21 @@
-# DixitFront
+# Dixit Project is a part of NexusHub
 
-This project was generated with [Angular CLI](https://github.com/angular/angular-cli) version 16.1.4.
+![Dixit Logo](https://www.libellud.com/wp-content/themes/libellud-theme/images/dixit/logo_dixit_2.png)
 
-## Development server
+The Dixit Project in Angular is a web application for playing the engaging card game Dixit. Dixit is a game for families and friends that requires creativity and imagination.
 
-Run `ng serve` for a dev server. Navigate to `http://localhost:4200/`. The application will automatically reload if you change any of the source files.
+## Game Rules
 
-## Code scaffolding
+1. Players take turns being the "storyteller." The storyteller selects a card from their hand and describes it using words, phrases, or a story.
+2. Other players choose a card from their hand that they believe matches the storyteller's description.
+3. The collected cards are shuffled and placed on the table.
+4. Players vote on which card they believe belongs to the storyteller.
+5. Points are scored based on which cards players choose.
 
-Run `ng generate component component-name` to generate a new component. You can also use `ng generate directive|pipe|service|class|guard|interface|enum|module`.
+## Installation and Running
 
-## Build
-
-Run `ng build` to build the project. The build artifacts will be stored in the `dist/` directory.
-
-## Running unit tests
-
-Run `ng test` to execute the unit tests via [Karma](https://karma-runner.github.io).
-
-## Running end-to-end tests
-
-Run `ng e2e` to execute the end-to-end tests via a platform of your choice. To use this command, you need to first add a package that implements end-to-end testing capabilities.
-
-## Further help
-
-To get more help on the Angular CLI use `ng help` or go check out the [Angular CLI Overview and Command Reference](https://angular.io/cli) page.
+1. Clone the repository to your computer.
+2. Navigate to the project directory.
+3. Install the dependencies.
+4. Start the local development server.
+5. Open your web browser and visit `http://localhost:4200`.
