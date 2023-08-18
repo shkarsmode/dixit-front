@@ -9,4 +9,9 @@ import { IUser } from 'src/shared/interfaces/IUser';
 export class RoomUsersComponent {
     
     @Input() public users: IUser[];
+    @Input() public isResults: boolean = false;
+
+    public get indexOfUserHeader(): number {
+        return this.users.findIndex(user => user.isHeader);
+    }
 }

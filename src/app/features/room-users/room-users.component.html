@@ -1,4 +1,4 @@
-<div class="wrap-users">
+<!-- <div class="wrap-users">
 	<table>
 		<tr>
 			<th>Score</th>
@@ -16,4 +16,31 @@
 			</div>
 		</tr>
 	</table>
-</div>
+</div> -->
+
+<main>
+	<div id="header">
+		<h1>Score</h1>
+	</div>
+	<div id="leaderboard" >
+		<div 
+			class="ribbon" 
+			[style]="'--i:' + indexOfUserHeader * 40 + 'px'"></div>
+		<table>
+			<tr 
+				*ngFor="let user of users" 
+				[ngClass]="{'is-header': user.isHeader}">
+				<td class="number">
+					<div 
+						[class]="'square ' + user.color" 
+						[ngClass]="{'watching': isResults && !user.isReadyToNextRound}">
+					</div>
+				</td>
+				<td class="name">{{ user.username }}</td>
+				<td class="points">
+					{{ user.score }}
+				</td>
+			</tr>
+		</table>
+	</div>
+</main>

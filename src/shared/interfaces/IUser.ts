@@ -6,4 +6,5 @@ export interface IUser {
     score: number;
     hand: string[];
     username: string;
+    isReadyToNextRound: boolean;
 }
