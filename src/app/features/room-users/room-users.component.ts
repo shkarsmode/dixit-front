@@ -11,7 +11,13 @@ export class RoomUsersComponent {
     @Input() public users: IUser[];
     @Input() public isResults: boolean = false;
 
+    public isShowLeaderBoard: boolean = true;
+
     public get indexOfUserHeader(): number {
         return this.users.findIndex(user => user.isHeader);
+    }
+
+    public toggleLeaderboard(): void {
+        this.isShowLeaderBoard = !this.isShowLeaderBoard;
     }
 }

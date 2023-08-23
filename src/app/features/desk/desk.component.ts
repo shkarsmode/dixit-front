@@ -1,6 +1,8 @@
 import { Component, EventEmitter, Input, OnDestroy, OnInit, Output } from '@angular/core';
 import { Subscription } from 'rxjs';
 import { IResults } from 'src/shared/interfaces/IResults';
+import { IUser } from 'src/shared/interfaces/IUser';
+import { UserService } from 'src/shared/services/user.service';
 import { DeskService } from '../../../shared/services/desk.service';
 
 @Component({
@@ -13,12 +15,17 @@ export class DeskComponent implements OnInit, OnDestroy {
     @Input() public cards: string[] = [];
     @Input() public cardsForBack: string[] = [];
     @Input() public results: IResults = [];
+    @Input() public users: IUser[] = [];
+
     @Input() public isShowCards: boolean = false;
     @Input() public isWaitForHeader: boolean = false;
-    @Input() public association: string = '';
     @Input() public isChooseCard: boolean = false;
     @Input() public isHeader: boolean = false;
     @Input() public isResults: boolean = false;
+
+    @Input() public association: string = '';
+    @Input() public myCardOnTheDeck: string = '';
+
     public isRotateCards: boolean = false;
 
     @Output() public voteCard: EventEmitter<string> = new EventEmitter();
@@ -32,7 +39,10 @@ export class DeskComponent implements OnInit, OnDestroy {
 
     private subscriptions: Subscription[] = [];
 
-    constructor(private deskService: DeskService) {}
+    constructor(
+        private deskService: DeskService,
+        private userService: UserService
+    ) {}
 
     public ngOnInit(): void {
         this.subscribeOnNewRound();
@@ -68,32 +78,57 @@ export class DeskComponent implements OnInit, OnDestroy {
     }
 
     private voteForThisCard(card: string): void {
-        if (this.results.length) return;
+        if (this.hasMatcheResultsAndUsersLength) return;
+        this.markUsersVote(card);
         this.voteCard.emit(card);
     }
 
+    private markUsersVote(card: string): void {
+        const color = this.userService.user.color as string;
+        const userVote = {
+            card,
+            votes: [color],
+            isHeaderCard: false
+        };
+        this.results = [userVote];
+    }
+
     public isHeaderCard = (card: string): boolean => {
-        if (!this.results.length) return false;
+        if (!this.hasMatcheResultsAndUsersLength) return false;
         return this.results.find(result => result.card === card)!.isHeaderCard
     }
 
     public onMouseDown(cardElement: HTMLDivElement, card: string): void {
-        if (this.isHeader || this.results.length) return;
+        if (
+            this.isHeader || 
+            this.hasMatcheResultsAndUsersLength || 
+            card === this.myCardOnTheDeck
+        ) return;
+        
         this.chosenCard = card;
         cardElement.style.transform = 'scale(0.9)';
     }
 
     public onMouseLeave(cardElement: HTMLDivElement): void {
-        if (this.isHeader || this.results.length) return;
+        if (this.isHeader || this.hasMatcheResultsAndUsersLength) return;
         this.chosenCard = '';
         cardElement.style.transform = 'scale(1)';
     }
 
     public onMouseUp(cardElement: HTMLDivElement, card: string): void {
-        if (this.isHeader || this.results.length || this.chosenCard !== card) return;
+        if (
+            this.isHeader || 
+            this.hasMatcheResultsAndUsersLength || 
+            this.chosenCard !== card
+        ) return;
+
         this.chosenCard = '';
         cardElement.style.transform = 'scale(1)';
         this.voteForThisCard(card);
+    }
+
+    private get hasMatcheResultsAndUsersLength (): boolean {
+        return this.results.length === this.users.length;
     }
 
     public ngOnDestroy(): void {
