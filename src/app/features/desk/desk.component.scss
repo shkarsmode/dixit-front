@@ -64,6 +64,23 @@
 	justify-content: center;
 	align-items: center;
 	box-shadow: -2px 3px 3px 3px #09090929;
+
+	opacity: 0;
+	transform: translateY(10px);
+
+	animation: anim-vote .5s var(--i) forwards;
+}
+
+@keyframes anim-vote {
+	from {
+		opacity: 0;
+		transform: translateY(10px);
+	}
+
+	to {
+		opacity: 1;
+		transform: translateY(0px);
+	}
 }
 
 @keyframes show-desk {

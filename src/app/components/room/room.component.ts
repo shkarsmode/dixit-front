@@ -60,6 +60,7 @@ export class RoomComponent {
         const sub = 
             this.route.params.subscribe(params => {
                 const roomCode = params['roomCode'];
+                console.log('changed', roomCode);
                 this.handleChangedRoomCode(roomCode);
             });
 
@@ -144,12 +145,14 @@ export class RoomComponent {
         this.socket.emit(
             'joinRoom', 
             this.roomCode,
-            (isRoomExists: boolean) => {
-                if (!isRoomExists) {
+            (user: IUser) => {
+                console.log(user);
+                if (!user) {
                     console.log('No room was found');
                     this.router.navigate(['/']);
                     return;
                 }
+                this.userService.user = user;
             });
     }
 

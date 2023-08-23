@@ -18,11 +18,24 @@
 	</table>
 </div> -->
 
-<main>
-	<div id="header">
+<main [ngClass]="{'hide': !isShowLeaderBoard}">
+	<div 
+		id="header"
+		activeCursor 
+		(click)="toggleLeaderboard()">
 		<h1>Score</h1>
+		<span 
+			*ngIf="isShowLeaderBoard" 
+			class="material-symbols-outlined">
+			visibility_off
+		</span>
+		<span 
+			*ngIf="!isShowLeaderBoard" 
+			class="material-symbols-outlined">
+			visibility
+		</span>
 	</div>
-	<div id="leaderboard" >
+	<div id="leaderboard" [ngClass]="{'hide': !isShowLeaderBoard}">
 		<div 
 			class="ribbon" 
 			[style]="'--i:' + indexOfUserHeader * 40 + 'px'"></div>
