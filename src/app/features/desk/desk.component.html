@@ -17,9 +17,12 @@
 	<button
 		*ngIf="!isEmittedNextRound" 
 		(click)="moveToNextRound()" 
-		activeCursor 
-		mat-raised-button>
-		Next Round
+		activeCursor>
+		<div>Next Round</div>
+		<span style="--n: 1"></span>
+		<span style="--n: 2"></span>
+		<span style="--n: 3"></span>
+		<span style="--n: 4"></span>
 	</button>
 	<h1 *ngIf="isEmittedNextRound">Wait for the rest...</h1>
 </div>
@@ -45,7 +48,7 @@
 			#cardElement
 			(mouseup)="onMouseUp(cardElement, card)"
 			(mouseleave)="onMouseLeave(cardElement)"
-			(mousedown)="onMouseDown(cardElement)">
+			(mousedown)="onMouseDown(cardElement, card)">
 			<div
 				class="card active"
 				activeCursor

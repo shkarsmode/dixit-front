@@ -27,6 +27,7 @@ export class DeskComponent implements OnInit, OnDestroy {
     
     public readonly pathToDixitCards: string = 'assets/img/dixit/';
     public readonly format: string = '.png';
+    public chosenCard: string = '';
     public isEmittedNextRound: boolean = false;
 
     private subscriptions: Subscription[] = [];
@@ -76,18 +77,21 @@ export class DeskComponent implements OnInit, OnDestroy {
         return this.results.find(result => result.card === card)!.isHeaderCard
     }
 
-    public onMouseDown(cardElement: HTMLDivElement): void {
+    public onMouseDown(cardElement: HTMLDivElement, card: string): void {
         if (this.isHeader || this.results.length) return;
+        this.chosenCard = card;
         cardElement.style.transform = 'scale(0.9)';
     }
 
     public onMouseLeave(cardElement: HTMLDivElement): void {
         if (this.isHeader || this.results.length) return;
+        this.chosenCard = '';
         cardElement.style.transform = 'scale(1)';
     }
 
     public onMouseUp(cardElement: HTMLDivElement, card: string): void {
-        if (this.isHeader || this.results.length) return;
+        if (this.isHeader || this.results.length || this.chosenCard !== card) return;
+        this.chosenCard = '';
         cardElement.style.transform = 'scale(1)';
         this.voteForThisCard(card);
     }
