@@ -162,6 +162,11 @@ h1 {
 		max-height: 0px;
 		transition-delay: 0s;
 	}
+
+	&.hide-border-radius {
+		border-bottom-left-radius: 0px;
+		border-bottom-right-radius: 0px;
+	}
 }
 
 table {

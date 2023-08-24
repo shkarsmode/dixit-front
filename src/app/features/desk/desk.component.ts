@@ -2,6 +2,7 @@ import { Component, EventEmitter, Input, OnDestroy, OnInit, Output } from '@angu
 import { Subscription } from 'rxjs';
 import { IResults } from 'src/shared/interfaces/IResults';
 import { IUser } from 'src/shared/interfaces/IUser';
+import { States } from 'src/shared/interfaces/states.enum';
 import { UserService } from 'src/shared/services/user.service';
 import { DeskService } from '../../../shared/services/desk.service';
 
@@ -17,14 +18,17 @@ export class DeskComponent implements OnInit, OnDestroy {
     @Input() public results: IResults = [];
     @Input() public users: IUser[] = [];
 
-    @Input() public isShowCards: boolean = false;
-    @Input() public isWaitForHeader: boolean = false;
-    @Input() public isChooseCard: boolean = false;
-    @Input() public isHeader: boolean = false;
-    @Input() public isResults: boolean = false;
+    // @Input() public isShowCards: boolean = false;
+    // @Input() public isWaitForHeader: boolean = false;
+    // @Input() public isChooseCard: boolean = false;
+    // @Input() public isResults: boolean = false;
+    // @Input() public isHeader: boolean = false;
 
     @Input() public association: string = '';
     @Input() public myCardOnTheDeck: string = '';
+
+    @Input() public state: States = States.NotStarted;
+    public readonly States: typeof States = States;
 
     public isRotateCards: boolean = false;
 
@@ -56,8 +60,11 @@ export class DeskComponent implements OnInit, OnDestroy {
     }
 
     public async ngOnChanges(): Promise<void> {
-        console.log("ngOnChanges", this.isRotateCards);
-        if (this.isShowCards && !this.isRotateCards && !this.isEmittedNextRound) {
+        if (
+            (States.ShowCardsForHeader === this.state || States.ShowCardsAndVoting === this.state) && 
+            !this.isRotateCards && 
+            !this.isEmittedNextRound
+        ) {
             await new Promise(resolve => setTimeout(resolve, 1000));
             this.isRotateCards = true;
         }
@@ -74,7 +81,6 @@ export class DeskComponent implements OnInit, OnDestroy {
     private clearVariablesForNewRound(): void {
         this.isEmittedNextRound = false;
         this.isRotateCards = false;
-        this.isShowCards = false;
     }
 
     private voteForThisCard(card: string): void {
@@ -100,7 +106,7 @@ export class DeskComponent implements OnInit, OnDestroy {
 
     public onMouseDown(cardElement: HTMLDivElement, card: string): void {
         if (
-            this.isHeader || 
+            States.ShowCardsForHeader === this.state || 
             this.hasMatcheResultsAndUsersLength || 
             card === this.myCardOnTheDeck
         ) return;
@@ -110,14 +116,17 @@ export class DeskComponent implements OnInit, OnDestroy {
     }
 
     public onMouseLeave(cardElement: HTMLDivElement): void {
-        if (this.isHeader || this.hasMatcheResultsAndUsersLength) return;
+        if (
+            States.ShowCardsForHeader === this.state || 
+            this.hasMatcheResultsAndUsersLength
+        ) return;
         this.chosenCard = '';
         cardElement.style.transform = 'scale(1)';
     }
 
     public onMouseUp(cardElement: HTMLDivElement, card: string): void {
         if (
-            this.isHeader || 
+            States.ShowCardsForHeader === this.state || 
             this.hasMatcheResultsAndUsersLength || 
             this.chosenCard !== card
         ) return;

@@ -20,6 +20,9 @@ export class RoomComponent {
 
     public statesEnum: typeof States = States;
     public state: States = States.NotStarted;
+    public States: typeof States = States;
+
+    public myCardOnTheDeck: string;
 
     public cardsOnTheDesk: string[] = [];
     public cardsForBack: string[] = [];
@@ -31,7 +34,7 @@ export class RoomComponent {
 
     public subscriptions: Subscription[] = [];
 
-    private socket: Socket;
+    private socket: Socket;    
     
 
     constructor(
@@ -54,6 +57,22 @@ export class RoomComponent {
         this.subscribeOnUsers();
         this.subscribeOnVotingResults();
         this.subscribeOnGiveOneCard();
+
+        // setInterval(() => {
+        //     console.table(
+        //         {
+        //             isResults: this.isResults,
+        //             isShowCards: this.isShowCards,
+        //             association: this.association,
+        //             cardsOnTheDesk: this.cardsOnTheDesk,
+        //             cardsForBack: this.cardsForBack,
+        //             results: this.results,
+        //             users: this.users,
+        //             cards: this.cardsOnTheDesk,
+        //             myCardOnTheDeck: this.myCardOnTheDeck
+        //         }
+        //     )
+        // }, 1000);
     }
 
     private subscibeOnRoomCodeChange(): void {
@@ -183,62 +202,26 @@ export class RoomComponent {
         this.subscriptions.push(sub);
     }
 
-    public isChooseCardAsAHeader: boolean = false;
-    public isChooseCard: boolean = false;
+
     public association: string = '';
-    public isShowCards: boolean = false;
-    public isVoting: boolean = false;
-    public isResults: boolean = false;
-    public isWaitForHeader: boolean = false;
+
+    
+    
 
     private handleStateChange(state: States): void {
         this.state = state;
-        // this.resetVariables();
-
-        console.log(state);
 
         switch(this.state) {
-            case States.Pending: break;
-            case States.ChooseCardAsHeader: {
-                this.resetVariables();
-                this.isChooseCardAsAHeader = true;
-                break;
-            };
+            case States.ChooseCardAsHeader:
             case States.WaitForHeader: {
                 this.resetVariables();
-                this.isWaitForHeader = true;
-                break;
-            }
-            case States.ChooseCard: {
-                this.isWaitForHeader = false;
-                this.isChooseCard = true;
-                break;
-            }
-            case States.ShowCards: {
-                this.isShowCards = true;
-                break;
-            }
-            case States.Voting: {
-                this.isShowCards = true;
-                this.isVoting = true;
-                break;
-            }
-            case States.Results: {
-                this.isShowCards = true;
-                this.isResults = true;
-                break;
             }
         }
     }
 
     private resetVariables(): void {
-        this.isChooseCardAsAHeader = false;
-        this.isWaitForHeader = false;
-        this.isChooseCard = false;
-        this.isVoting = false;
-        this.isResults = false;
-        this.isShowCards = false;
         this.association = '';
+        this.myCardOnTheDeck = '';
         this.cardsOnTheDesk = [];
         this.cardsForBack = [];
         this.results = [];
@@ -262,20 +245,27 @@ export class RoomComponent {
     }
 
     public chooseCard(card: string): void {
-        if (this.isChooseCardAsAHeader && this.association) {
-            this.socket.emit('chooseCardAsAHeader', this.roomCode, card, this.association);
-            this.isChooseCardAsAHeader = false;
-        } else if (this.isChooseCard) {
-            this.socket.emit('chooseCardAsAUser', this.roomCode, card);
-            this.isChooseCard = false;
-            this.myCardOnTheDeck = card;
+        if (!this.association) return;
+
+        switch(this.state) {
+            case States.ChooseCardAsHeader: {
+                this.socket.emit('chooseCardAsAHeader', this.roomCode, card, this.association);
+                break;
+            };
+            case States.ChooseCard: {
+                this.socket.emit('chooseCardAsAUser', this.roomCode, card);
+                this.myCardOnTheDeck = card;
+                break;
+            };
         }
     }
 
-    public myCardOnTheDeck: string;
-    public isVotedCard: boolean = false;
+    
     public voteForThisCard(card: string): void {
-        if (this.isVoting && card !== this.myCardOnTheDeck) {
+        if (
+            States.ShowCardsAndVoting === this.state && 
+            card !== this.myCardOnTheDeck
+        ) {
             this.socket.emit('voteForTheCard', this.roomCode, card);
         }
     }

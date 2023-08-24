@@ -2,38 +2,26 @@
 	<div class="wrap-info-center">
 		<h2>Room - <b activeCursor>{{ roomCode }}</b></h2>
 		<h4>Users connected - <b>{{ countOfUsers }}</b></h4>
-		<button (click)="leaveRoom()" activeCursor mat-raised-button>Leave room</button>
+		<button 
+			(click)="leaveRoom()" 
+			activeCursor 
+			mat-raised-button>
+			Leave room
+		</button>
 	</div>
 </div>
 
 <app-admin-panel></app-admin-panel>
 
 <div class="wrap-game-area" *ngIf="state !== statesEnum.NotStarted">
-	<!-- <div *ngIf="cardsOnTheDesk">
-		<h1 *ngIf="!isShowCards">
-			{{ cardsOnTheDesk.length }}
-		</h1>
-		<div *ngIf="isShowCards" style="display: flex;">
-			<h1>{{ association }}</h1>
-			<app-card 
-				*ngFor="let card of cardsOnTheDesk"
-				[card]="card"
-				(click)="voteForThisCard(card)">
-			</app-card>
-		</div>
-	</div> -->
 
 	<app-desk
 		[cards]="cardsOnTheDesk"
 		[cardsForBack]="cardsForBack"
-		[isShowCards]="isShowCards"
-		[isChooseCard]="isChooseCard"
-		[isWaitForHeader]="isWaitForHeader"
-		[isHeader]="!isVoting"
-		[isResults]="isResults"
 		[association]="association"
 		[results]="results"
 		[users]="users"
+		[state]="state"
 		[myCardOnTheDeck]="myCardOnTheDeck"
 		(nextRound)="moveToNextRound()"
 		(voteCard)="voteForThisCard($event)">
@@ -42,10 +30,10 @@
 	<app-room-users 
 		*ngIf="users"
 		[users]="users"
-		[isResults]="isResults">
+		[isResults]="States.Results === state">
 	</app-room-users>
 
-	<div *ngIf="isChooseCardAsAHeader" class="wrap-info-center">
+	<div *ngIf="States.ChooseCardAsHeader === state" class="wrap-info-center">
 		<h3>You have to write the association and choose the card</h3>
 		<mat-form-field>
 			<mat-label>Your association</mat-label>
@@ -58,7 +46,12 @@
 	</div>
 
 	<app-hand 
-		[ngClass]="{'put-down': isShowCards}"
+		[ngClass]="{
+			'put-down': 
+				States.ShowCardsForHeader === state ||
+				States.ShowCardsAndVoting === state ||
+				States.Results === state
+		}"
 		(chooseCard)="chooseCard($event)"
 		[hand]="handCards"
 		[cardsOnTheTable]="cardsOnTheDesk">

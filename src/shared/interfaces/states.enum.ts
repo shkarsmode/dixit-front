@@ -3,8 +3,9 @@ export enum States {
     Pending = 'pending',
     WaitForHeader = 'waitforheader',
     ChooseCard = 'choosecard',
+    WaitForTheOthersVotes = 'waitfortheothersvotes',
     ChooseCardAsHeader = 'choosecardasheader',
-    ShowCards = 'showcards',
-    Voting = 'voting',
+    ShowCardsForHeader = 'showcards',
+    ShowCardsAndVoting = 'voting',
     Results = 'results',
 }

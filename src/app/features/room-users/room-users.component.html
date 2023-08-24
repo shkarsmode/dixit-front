@@ -35,7 +35,12 @@
 			visibility
 		</span>
 	</div>
-	<div id="leaderboard" [ngClass]="{'hide': !isShowLeaderBoard}">
+	<div 
+		id="leaderboard" 
+		[ngClass]="{
+			'hide': !isShowLeaderBoard,
+			'hide-border-radius': indexOfUserHeader === users.length - 1
+		}">
 		<div 
 			class="ribbon" 
 			[style]="'--i:' + indexOfUserHeader * 40 + 'px'"></div>
