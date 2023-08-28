@@ -17,6 +17,7 @@
 
 	<ng-template [ngSwitchCase]="States.ShowCardsAndVoting">
 		<h1>Vote for the card by clicking on it</h1>
+		<b>{{ association }}</b>
 	</ng-template>
 
 	<ng-template [ngSwitchCase]="States.ShowCardsForHeader">
@@ -72,7 +73,6 @@
 	</button>
 	<h1 *ngIf="isEmittedNextRound">Wait for the rest...</h1>
 </div> -->
-
 
 <div class="wrap" [ngClass]="{'anim-desk': isRotateCards }">
 	<ng-template [ngIf]="!isRotateCards">

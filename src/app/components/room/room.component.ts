@@ -57,6 +57,7 @@ export class RoomComponent {
         this.subscribeOnUsers();
         this.subscribeOnVotingResults();
         this.subscribeOnGiveOneCard();
+        this.subscribeOnGiveMyCardOnTheDesk();
 
         // setInterval(() => {
         //     console.table(
@@ -79,7 +80,6 @@ export class RoomComponent {
         const sub = 
             this.route.params.subscribe(params => {
                 const roomCode = params['roomCode'];
-                console.log('changed', roomCode);
                 this.handleChangedRoomCode(roomCode);
             });
 
@@ -103,7 +103,6 @@ export class RoomComponent {
             this.socket.fromEvent<IUser[]>('users')
                 .subscribe((users: IUser[]) => {
                     this.users = users;
-                    console.log('users', users);
                 });
 
         this.subscriptions.push(sub)
@@ -215,6 +214,7 @@ export class RoomComponent {
             case States.ChooseCardAsHeader:
             case States.WaitForHeader: {
                 this.resetVariables();
+                console.log("RESET VARIABLES");
             }
         }
     }
@@ -240,6 +240,14 @@ export class RoomComponent {
         const sub = 
             this.socket.fromEvent<string>('giveOneCard')
                 .subscribe((card: string) => this.handCards.push(card));
+                
+        this.subscriptions.push(sub);
+    }
+
+    private subscribeOnGiveMyCardOnTheDesk(): void {
+        const sub = 
+            this.socket.fromEvent<string>('myCardOnTheDesk')
+                .subscribe((card: string) => this.myCardOnTheDeck = card);
                 
         this.subscriptions.push(sub);
     }

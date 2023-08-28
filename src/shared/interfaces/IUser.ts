@@ -1,10 +1,10 @@
 export interface IUser {
     id: string;
-    clientIds: string[];
+    // clientIds: string[];
     color?: string;
     isHeader: boolean;
     score: number;
-    hand: string[];
+    // hand: string[];
     username: string;
     isReadyToNextRound: boolean;
 }

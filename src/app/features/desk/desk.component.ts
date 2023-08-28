@@ -61,7 +61,11 @@ export class DeskComponent implements OnInit, OnDestroy {
 
     public async ngOnChanges(): Promise<void> {
         if (
-            (States.ShowCardsForHeader === this.state || States.ShowCardsAndVoting === this.state) && 
+            (
+                States.ShowCardsForHeader === this.state || 
+                States.ShowCardsAndVoting === this.state || 
+                States.Results === this.state
+            ) && 
             !this.isRotateCards && 
             !this.isEmittedNextRound
         ) {
@@ -108,6 +112,7 @@ export class DeskComponent implements OnInit, OnDestroy {
         if (
             States.ShowCardsForHeader === this.state || 
             this.hasMatcheResultsAndUsersLength || 
+            States.Results === this.state ||
             card === this.myCardOnTheDeck
         ) return;
         
@@ -117,7 +122,8 @@ export class DeskComponent implements OnInit, OnDestroy {
 
     public onMouseLeave(cardElement: HTMLDivElement): void {
         if (
-            States.ShowCardsForHeader === this.state || 
+            States.ShowCardsForHeader === this.state ||
+            States.Results === this.state || 
             this.hasMatcheResultsAndUsersLength
         ) return;
         this.chosenCard = '';
@@ -127,6 +133,7 @@ export class DeskComponent implements OnInit, OnDestroy {
     public onMouseUp(cardElement: HTMLDivElement, card: string): void {
         if (
             States.ShowCardsForHeader === this.state || 
+            States.Results === this.state ||
             this.hasMatcheResultsAndUsersLength || 
             this.chosenCard !== card
         ) return;
@@ -137,6 +144,7 @@ export class DeskComponent implements OnInit, OnDestroy {
     }
 
     private get hasMatcheResultsAndUsersLength (): boolean {
+        if (!this.results || !this.users) return false;
         return this.results.length === this.users.length;
     }
 
