@@ -1,4 +1,4 @@
-import { Component, Input } from '@angular/core';
+import { Component, Input, OnInit } from '@angular/core';
 import { IUser } from 'src/shared/interfaces/IUser';
 
 @Component({
@@ -6,12 +6,21 @@ import { IUser } from 'src/shared/interfaces/IUser';
     templateUrl: './room-users.component.html',
     styleUrls: ['./room-users.component.scss']
 })
-export class RoomUsersComponent {
+export class RoomUsersComponent implements OnInit {
     
     @Input() public users: IUser[];
     @Input() public isResults: boolean = false;
 
     public isShowLeaderBoard: boolean = true;
+
+    public ngOnInit(): void {
+        this.hideShowLeaderBoardIfScreenLower700px();
+    }
+
+    private hideShowLeaderBoardIfScreenLower700px(): void {
+        this.isShowLeaderBoard = window.innerWidth > 700;
+        console.log(this.isShowLeaderBoard);
+    }
 
     public get indexOfUserHeader(): number {
         return this.users.findIndex(user => user.isHeader);

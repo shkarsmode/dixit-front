@@ -92,6 +92,21 @@ app-card {
 
 }
 
+
+.device-mobile {
+	app-card:hover {
+		transform: none !important;
+	}
+
+	app-card {
+		margin: 0 !important;
+		margin-left: -80px !important;
+		&:nth-child(1) {
+			margin-left: 0px !important;
+		}
+	}
+}
+
 .showing {
 	app-card {
 		opacity: 0;
@@ -108,5 +123,88 @@ app-card {
 
 	100% {
 		opacity: 1;
+	}
+}
+
+
+@media (max-width: 800px) {
+	app-card {
+		transform: none !important;
+		margin-top: 0;
+		margin-left: -80px;
+
+		.cards-6 & {
+			margin-top: 0 !important;
+		}
+
+		&:hover {
+			margin-right: 110px;
+			transform: translateY(-100px) scale(1.3) !important;
+		}
+
+		&:nth-child(1) {
+			&:hover {
+				margin-right: 180px;
+				transform: translate(100px, -100px) scale(1.3) !important;
+			}
+		}
+	}	
+}
+
+@media (max-width: 760px) {
+	.wrap {
+		justify-content: space-between;
+		width: 100%;
+	}
+
+	app-card {
+		&:hover {
+			margin-right: 110px;
+			transform: translateY(-100px) scale(1.7) !important;
+		}
+
+		&:nth-child(1) {
+			&:hover {
+				margin-right: 180px;
+				transform: translate(60px, -100px) scale(1.7) !important;
+			}
+		}
+		&:nth-child(7) {
+			&:hover {
+				transform: translate(40px, -100px) scale(1.7) !important;
+			}
+		}
+	}	
+}
+
+@media (max-width: 550px) {
+	app-card {
+		&:hover {
+			margin-right: 110px;
+			transform: translateY(-100px) scale(1.7) !important;
+		}
+
+		&:nth-child(1) {
+			&:hover {
+				margin-right: 170px;
+				transform: translate(45px, -100px) scale(1.7) !important;
+			}
+		}
+
+		&:nth-child(6) {
+			&:hover {
+				margin-right: 100px;
+				transform: translate(-30px, -100px) scale(1.7) !important;
+			}
+		}
+
+		&:nth-child(7) {
+			&:hover {
+				margin-right: 0px;
+				transform: translate(-60px, -100px) scale(1.7) !important;
+			}
+		}
+
+		
 	}
 }

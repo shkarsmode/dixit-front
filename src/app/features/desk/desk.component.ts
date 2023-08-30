@@ -105,7 +105,8 @@ export class DeskComponent implements OnInit, OnDestroy {
 
     public isHeaderCard = (card: string): boolean => {
         if (!this.hasMatcheResultsAndUsersLength) return false;
-        return this.results.find(result => result.card === card)!.isHeaderCard
+        const cardToCheckOnHeader = this.results.find(result => result.card === card);
+        return cardToCheckOnHeader ? cardToCheckOnHeader.isHeaderCard : false;
     }
 
     public onMouseDown(cardElement: HTMLDivElement, card: string): void {
@@ -141,6 +142,19 @@ export class DeskComponent implements OnInit, OnDestroy {
         this.chosenCard = '';
         cardElement.style.transform = 'scale(1)';
         this.voteForThisCard(card);
+    }
+
+    public getCardLayoutClass(cardCount: number): string {
+        if (cardCount <= 4) {
+            return 'large';
+        }
+        if (cardCount > 4 && cardCount <= 7) {
+            return 'medium';
+        }
+        if (cardCount > 7 && cardCount <= 10) {
+            return 'small';
+        }
+        return 'small';
     }
 
     private get hasMatcheResultsAndUsersLength (): boolean {

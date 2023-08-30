@@ -276,3 +276,22 @@ td {
 
 	transition: top .5s;
 }
+
+@media (max-width: 1000px) {
+	main {
+		width: 180px;
+		overflow: hidden;
+	}
+
+	#leaderboard {
+		width: 100%;
+	}
+
+	.ribbon {
+		width: 100%;
+	}
+
+	.name {
+		width: 105px;
+	}
+}

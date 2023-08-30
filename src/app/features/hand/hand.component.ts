@@ -1,4 +1,5 @@
-import { Component, EventEmitter, Input, Output } from '@angular/core';
+import { Component, EventEmitter, HostListener, Input, Output } from '@angular/core';
+import { DeviceUtilityService } from 'src/app/utils/device-utility.service';
 
 @Component({
     selector: 'app-hand',
@@ -7,16 +8,26 @@ import { Component, EventEmitter, Input, Output } from '@angular/core';
 })
 export class HandComponent {
 
-    public isShowFirstCard: boolean = true;
-    @Input() cardsOnTheTable: string[] = [];
-    @Input() hand: string[];
+    @Input() public cardsOnTheTable: string[] = [];
+    @Input() public hand: string[];
+    @Input() public hasAssociation: boolean = false;
     @Output() chooseCard: EventEmitter<string> = new EventEmitter();
+
+    public isShowFirstCard: boolean = true;
+    public isMobileDevice: boolean = false;
+    public previewCard: string = '';
+
+    constructor(
+        private deviceUtilityService: DeviceUtilityService
+    ) {}
 
     public ngOnInit(): void {
         this.firstShowCards();
-        // setTimeout(() => {
-        //     this.hand.push('7');
-        // }, 5000);
+        this.checkOnMobileDevice();
+    }
+
+    private checkOnMobileDevice(): void {
+        this.isMobileDevice = this.deviceUtilityService.isMobileDevice;
     }
 
     public choose(card: string): void {
@@ -28,5 +39,10 @@ export class HandComponent {
         await new Promise(resolve => setTimeout(resolve, 3000));
 
         this.isShowFirstCard = false;
+    }
+
+    @HostListener('window:resize')
+    public onResize(): void {
+        this.checkOnMobileDevice();
     }
 }

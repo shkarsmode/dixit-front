@@ -11,7 +11,7 @@
 	</div>
 </div>
 
-<app-admin-panel></app-admin-panel>
+<!-- <app-admin-panel></app-admin-panel> -->
 
 <div class="wrap-game-area" *ngIf="state !== statesEnum.NotStarted">
 
@@ -52,6 +52,7 @@
 				States.ShowCardsAndVoting === state ||
 				States.Results === state
 		}"
+		[hasAssociation]="!!association"
 		(chooseCard)="chooseCard($event)"
 		[hand]="handCards"
 		[cardsOnTheTable]="cardsOnTheDesk">

@@ -89,36 +89,40 @@
 
 	<ng-template [ngIf]="isRotateCards">
 		<div 
-			*ngFor="let card of cards; index as cardIndex"
-			class="card-container"
-			[ngClass]="{
-				'admin-card': isHeaderCard(card),
-				'my-card': myCardOnTheDeck === card
-			}"
-			#cardElement
-			(mouseup)="onMouseUp(cardElement, card)"
-			(mouseleave)="onMouseLeave(cardElement)"
-			(mousedown)="onMouseDown(cardElement, card)">
-			<div
-				class="card active"
-				activeCursor
-				[style]="'--i:'+ (+cardIndex - (0.3)*cardIndex) + 's'">
-				<div class="wrap-votes" *ngIf="results.length">
-					<ng-container *ngFor="let result of results;">
-						<ng-template [ngIf]="result.card === card">
-							<div
-								*ngFor="let color of result.votes; index as voteIndex"
-								class="vote"
-								[style]="'--i:' + ((0.5) * voteIndex) + 's'"
-								[ngClass]="color">
-							</div>
-						</ng-template>
-					</ng-container>
+			class="wrap-cards"
+			[ngClass]="getCardLayoutClass(cards.length)">
+			<div 
+				*ngFor="let card of cards; index as cardIndex"
+				class="card-container"
+				[ngClass]="{
+					'admin-card': isHeaderCard(card),
+					'my-card': myCardOnTheDeck === card
+				}"
+				#cardElement
+				(mouseup)="onMouseUp(cardElement, card)"
+				(mouseleave)="onMouseLeave(cardElement)"
+				(mousedown)="onMouseDown(cardElement, card)">
+				<div
+					class="card active"
+					activeCursor
+					[style]="'--i:'+ (+cardIndex - (0.3)*cardIndex) + 's'">
+					<div class="wrap-votes" *ngIf="results.length">
+						<ng-container *ngFor="let result of results;">
+							<ng-template [ngIf]="result.card === card">
+								<div
+									*ngFor="let color of result.votes; index as voteIndex"
+									class="vote"
+									[style]="'--i:' + ((0.5) * voteIndex) + 's'"
+									[ngClass]="color">
+								</div>
+							</ng-template>
+						</ng-container>
+					</div>
+					<div class="front">
+						<img [src]="pathToDixitCards + card + format" loading="eager">
+					</div>
+					<div class="back"></div>
 				</div>
-				<div class="front">
-					<img [src]="pathToDixitCards + card + format" loading="eager">
-				</div>
-				<div class="back"></div>
 			</div>
 		</div>
 	</ng-template>

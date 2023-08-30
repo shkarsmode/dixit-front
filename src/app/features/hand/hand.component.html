@@ -1,11 +1,17 @@
 <div 
 	class="wrap" 
-	[ngClass]="{'cards-6': hand.length === 6, 'showing': isShowFirstCard}">
+	[ngClass]="{
+		'cards-6': hand.length === 6, 
+		'showing': isShowFirstCard,
+		'device-mobile': isMobileDevice
+	}">
 	<app-card
 		activeCursor
 		*ngFor="let card of hand; index as i"
 		[card]="card"
-		(click)="choose(card)"
+		[isMobileDevice]="isMobileDevice"
+		[hasAssociation]="hasAssociation"
+		(chooseCard)="choose(card)"
 		[style]="'--i:' + i">
 	</app-card>
 </div>
