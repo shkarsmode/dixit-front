@@ -1,0 +1,192 @@
+.wrap {
+	display: flex;
+	flex-direction: column;
+	justify-content: space-between;
+	align-items: center;
+
+	width: 100%;
+	height: 100%;
+
+	box-sizing: border-box;
+
+	padding: 25px 15px;
+}
+
+.wrap-form {
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	flex-direction: column;
+	// padding-top: ;
+}
+
+.wrap-button {
+	display: flex;
+	justify-content: center;
+	width: 100%;
+}
+
+h1 {
+	font-family: 'Montserrat', sans-serif;
+	font-weight: 600;
+	font-size: 28px;
+	text-align: center;
+}
+
+h2 {
+	display: flex;
+	justify-content: center;
+	align-items: center;
+
+	font-size: 25px;
+	text-align: center;
+
+	height: 32px;
+	margin-bottom: 20px;
+	margin-top: 30px;
+
+	animation: anim-input-color 7s linear infinite;
+
+	.square {
+		width: 10px;
+		height: 10px;
+
+		&:first-child {
+			margin-right: 15px;
+		}
+
+		&:last-child {
+			margin-left: 15px;
+		}
+	}
+}
+
+@keyframes anim-input-color {
+	0% {
+		color: #007f92;
+	}
+
+	30% {
+		color: #00b359;
+	}
+
+	60% {
+		color: #bbb800
+	}
+
+	70% {
+		color: #01ac56;
+	}
+
+	100% {
+		color: #0098af;
+	}
+}
+
+button {
+	width: 350px;
+	background-color: #0991d7 !important;
+
+	::ng-deep.mdc-button__label {
+		color: white;
+		font-weight: 700 !important;
+		font-size: 14px;
+	}
+
+	&:disabled {
+		opacity: 0.5;
+	}
+}
+
+::ng-deep.mdc-text-field {
+	width: 400px;
+	// height: 30px !important;
+	background: #ffffff14;
+
+	input {
+		font-size: 14px;
+		font-weight: bold;
+		caret-color: white;
+		height: 20px !important;
+	}
+
+	::ng-deep  {
+		.mat-mdc-form-field-infix {
+			width: 260px;
+		}
+
+		mat-label {
+			color: rgb(32, 32, 32);
+		}
+
+		--mdc-theme-primary: #0991d7;
+	}
+
+	
+
+	&:not(.mdc-text-field--disabled) .mdc-line-ripple::before {
+		border-bottom-color: rgba(255, 255, 255, 0.397)
+	}
+
+	&.mdc-text-field--filled .mdc-line-ripple::after {
+		border-bottom-color:  rgba(255, 255, 255, 0.616);
+	}
+
+	// mat-label {
+	// 	font-size: 22px;
+	// 	font-weight: 500;
+	// }
+
+	// .mat-mdc-form-field-infix {
+	// 	padding-top: 15px;
+	// 	padding-bottom: 0;
+	// }
+
+	// .mat-mdc-floating-label {
+	// 	top: 31px;
+	// }
+}
+
+
+/* Colors
+================*/
+
+.red {
+	background-color: #da0c00;
+}
+
+.blue {
+	background-color: #003f76;
+}
+
+.green {
+	background-color: #2ECC40;
+}
+
+.yellow {
+	background-color: #FFDC00;
+}
+
+.orange {
+	background-color: #FF851B;
+}
+
+.purple {
+	background-color: #b200cc;
+}
+
+.pink {
+	background-color: #f6119a;
+}
+
+.brown {
+	background-color: #783200;
+}
+
+.gray {
+	background-color: #dedede;
+}
+
+.black {
+	background-color: #111111;
+}

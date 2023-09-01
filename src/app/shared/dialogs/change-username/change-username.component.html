@@ -1,0 +1,27 @@
+<div class="wrap">
+	<div class="wrap-form">
+		<h1>Create Your Nickname</h1>
+		<h2>
+			<span [class]="'square ' + userColor"></span>
+			{{ username.value }}
+			<span [class]="'square ' + userColor"></span>
+		</h2>
+		<mat-form-field>
+			<mat-label>Username</mat-label>
+			<input
+				activeCursor
+				matInput
+				[formControl]="username" 
+				type="text">
+		</mat-form-field>
+	</div>
+
+	<div class="wrap-button">
+		<button
+			(click)="changeUserName()"
+			[disabled]="username.invalid" 
+			mat-raised-button>
+			Save
+		</button>
+	</div>
+</div>
