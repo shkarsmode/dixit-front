@@ -3,7 +3,7 @@ import { NgModule } from '@angular/core';
 import { SocketIoConfig, SocketIoModule as SoketModule } from 'ngx-socket-io';
 
 const config: SocketIoConfig = { 
-    url: 'https://0dbc-188-230-92-12.ngrok-free.app', 
+    url: 'http://18.159.206.65:3000', 
     options: {
         withCredentials: true,
         transports: ['websocket'],
