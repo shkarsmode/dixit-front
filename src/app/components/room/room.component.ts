@@ -64,8 +64,22 @@ export class RoomComponent {
         this.subscribeOnGiveOneCard();
         this.subscribeOnGiveMyCardOnTheDesk();
         this.showControlPanelIfUserAdmin();
+        this.subscribeOnPingConnection();
         this.initDialogConfig();
         this.checkIsUserDoesntHasName();
+    }
+
+    private subscribeOnPingConnection(): void {
+        const sub = 
+            this.socket.fromEvent<string>('connectedToServer')
+                .subscribe((userId: string) => {
+                    console.log(userId);
+                    if (this.roomCode) {
+                        this.joinRoom();
+                    }
+                });
+
+        this.subscriptions.push(sub);
     }
 
     private checkIsUserDoesntHasName(): void {

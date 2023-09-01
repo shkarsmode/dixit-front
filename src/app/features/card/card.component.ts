@@ -27,6 +27,7 @@ export class CardComponent implements AfterViewInit {
     public readonly pathToDixitCards: string = 'assets/img/dixit/';
     public readonly format: string = '.png';
 
+    // ! init default position after changing cards
 
     constructor(
         private hostRef: ElementRef
@@ -60,14 +61,21 @@ export class CardComponent implements AfterViewInit {
             return;
         }
 
+        const defaultCardRect = this.cardRef.nativeElement.getBoundingClientRect() as DOMRect;
+        const { height, width } = defaultCardRect;
+
         this.isPreviewCard = true;
 
         const windowHeight = window.innerHeight;
         const windowWidth = window.innerWidth;
 
         const diffTopToDislace = 0;
-        const diffTop = windowHeight / 2 - this.initialHeight / 2 - diffTopToDislace;
-        const diffLeft = windowWidth / 2 - this.initialWidth / 2;
+        // const diffTop = windowHeight / 2 - this.initialHeight / 2 - diffTopToDislace;
+        // const diffLeft = windowWidth / 2 - this.initialWidth / 2;
+
+        const diffTop = windowHeight / 2 - height / 2;
+        const diffLeft = windowWidth / 2 - width / 2;
+        
         
         this.previewCardRef.nativeElement.style.left = diffLeft + 'px';
         this.previewCardRef.nativeElement.style.top = diffTop + 'px';
@@ -82,8 +90,11 @@ export class CardComponent implements AfterViewInit {
     }
 
     public async backToInitialPosition(): Promise<void> {
-        this.previewCardRef.nativeElement.style.top = this.initialPositionTop + 'px';
-        this.previewCardRef.nativeElement.style.left = this.initialPositionLeft + 'px';
+        const defaultCardRect = this.cardRef.nativeElement.getBoundingClientRect() as DOMRect;
+        const { top, left } = defaultCardRect;
+
+        this.previewCardRef.nativeElement.style.top = top + 'px';
+        this.previewCardRef.nativeElement.style.left = left + 'px';
         this.previewCardRef.nativeElement.style.transform = 'scale(1)';
         this.hostRef.nativeElement.style.zIndex = this.initialZIndex;
 
