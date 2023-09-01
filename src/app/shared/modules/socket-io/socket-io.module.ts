@@ -6,8 +6,11 @@ const config: SocketIoConfig = {
     url: 'https://0dbc-188-230-92-12.ngrok-free.app', 
     options: {
         withCredentials: true,
-        transports: ['websocket']
-    }
+        transports: ['websocket'],
+        extraHeaders: {
+            'ngrok-skip-browser-warning': 'true',
+        },
+    },
 };
 
 

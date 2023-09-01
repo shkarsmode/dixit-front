@@ -15,7 +15,7 @@ export class HeaderInterceptor implements HttpInterceptor {
     intercept(request: HttpRequest<unknown>, next: HttpHandler): Observable<HttpEvent<unknown>> {
         // Add your headers here
         const headers = request.headers
-            .set('ngrok-skip-browser-warning', '69420')
+            .set('ngrok-skip-browser-warning', '1')
         
         // Clone the request with the updated headers
         const modifiedRequest = request.clone({ headers });
