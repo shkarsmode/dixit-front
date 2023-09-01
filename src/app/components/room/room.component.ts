@@ -1,12 +1,14 @@
 import { Component } from '@angular/core';
+import { MatDialog, MatDialogConfig } from '@angular/material/dialog';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Socket } from 'ngx-socket-io';
 import { Subscription } from 'rxjs';
-import { IResults } from 'src/shared/interfaces/IResults';
-import { IUser } from 'src/shared/interfaces/IUser';
-import { States } from 'src/shared/interfaces/states.enum';
-import { DeskService } from 'src/shared/services/desk.service';
-import { UserService } from 'src/shared/services/user.service';
+import { ChangeUsernameComponent } from 'src/app/shared/dialogs/change-username/change-username.component';
+import { IResults } from 'src/app/shared/interfaces/IResults';
+import { IUser } from 'src/app/shared/interfaces/IUser';
+import { States } from 'src/app/shared/interfaces/states.enum';
+import { DeskService } from 'src/app/shared/services/desk.service';
+import { UserService } from 'src/app/shared/services/user.service';
 
 @Component({
     selector: 'app-room',
@@ -14,15 +16,17 @@ import { UserService } from 'src/shared/services/user.service';
     styleUrls: ['./room.component.scss']
 })
 export class RoomComponent {
-
-    public roomCode: string;
-    public countOfUsers: number;
+    
+    public isAdmin: boolean = false;
 
     public statesEnum: typeof States = States;
     public state: States = States.NotStarted;
     public States: typeof States = States;
 
-    public myCardOnTheDeck: string;
+    public roomCode: string = '';
+    public myCardOnTheDeck: string = '';
+    public association: string = '';
+    public countOfUsers: number;
 
     public cardsOnTheDesk: string[] = [];
     public cardsForBack: string[] = [];
@@ -32,16 +36,17 @@ export class RoomComponent {
     public usersScore: Array<[string, number]>;
     public users: IUser[];
 
-    public subscriptions: Subscription[] = [];
-
-    private socket: Socket;    
+    private socket: Socket;
+    private dialogConfig: MatDialogConfig = new MatDialogConfig();
+    private subscriptions: Subscription[] = [];
     
 
     constructor(
         private route: ActivatedRoute,
         private router: Router,
         private deskService: DeskService,
-        private userService: UserService
+        private userService: UserService,
+        private dialog: MatDialog
     ) {
         this.socket = userService.socket;
     }
@@ -58,22 +63,21 @@ export class RoomComponent {
         this.subscribeOnVotingResults();
         this.subscribeOnGiveOneCard();
         this.subscribeOnGiveMyCardOnTheDesk();
+        this.showControlPanelIfUserAdmin();
+        this.initDialogConfig();
+        this.checkIsUserDoesntHasName();
+    }
 
-        // setInterval(() => {
-        //     console.table(
-        //         {
-        //             isResults: this.isResults,
-        //             isShowCards: this.isShowCards,
-        //             association: this.association,
-        //             cardsOnTheDesk: this.cardsOnTheDesk,
-        //             cardsForBack: this.cardsForBack,
-        //             results: this.results,
-        //             users: this.users,
-        //             cards: this.cardsOnTheDesk,
-        //             myCardOnTheDeck: this.myCardOnTheDeck
-        //         }
-        //     )
-        // }, 1000);
+    private checkIsUserDoesntHasName(): void {
+        const username = localStorage.getItem('username');
+        if (username) {
+            if (username.length > 13)
+                this.openDialogToChangeUserName();
+            
+            return;
+        }
+        
+        this.openDialogToChangeUserName();
     }
 
     private subscibeOnRoomCodeChange(): void {
@@ -103,6 +107,7 @@ export class RoomComponent {
             this.socket.fromEvent<IUser[]>('users')
                 .subscribe((users: IUser[]) => {
                     this.users = users;
+                    this.userService.setCurrentUser(this.users);
                 });
 
         this.subscriptions.push(sub)
@@ -201,12 +206,6 @@ export class RoomComponent {
         this.subscriptions.push(sub);
     }
 
-
-    public association: string = '';
-
-    
-    
-
     private handleStateChange(state: States): void {
         this.state = state;
 
@@ -247,7 +246,10 @@ export class RoomComponent {
     private subscribeOnGiveMyCardOnTheDesk(): void {
         const sub = 
             this.socket.fromEvent<string>('myCardOnTheDesk')
-                .subscribe((card: string) => this.myCardOnTheDeck = card);
+                .subscribe((card: string) => {
+                    this.myCardOnTheDeck = card;
+                    console.log('myCardOnTheDeck', this.myCardOnTheDeck)
+                });
                 
         this.subscriptions.push(sub);
     }
@@ -268,7 +270,16 @@ export class RoomComponent {
         }
     }
 
-    
+    public get isPutDownHand(): boolean {
+        switch(this.state) {
+            case States.ShowCardsForHeader:
+            case States.ShowCardsAndVoting:
+            case States.Results:
+                return true;
+            default: return false;
+        }
+    }
+
     public voteForThisCard(card: string): void {
         if (
             States.ShowCardsAndVoting === this.state && 
@@ -286,6 +297,30 @@ export class RoomComponent {
         this.socket.emit('leaveRoom', this.roomCode);
         this.router.navigate(['/']);
     }
+
+    // * Change username functions * //
+
+    private showControlPanelIfUserAdmin(): void {
+        const isAdmin = !!localStorage.getItem('isAdmin');
+        if (isAdmin) this.isAdmin = isAdmin;
+    }
+
+    private initDialogConfig(): void {
+        this.dialogConfig.autoFocus = false;
+        this.dialogConfig.maxWidth = '550px';
+        this.dialogConfig.width = '90%';
+        this.dialogConfig.height = '350px';
+        this.dialogConfig.disableClose = true;
+    }
+
+    private openDialogToChangeUserName(): void {
+        this.dialog.open(
+            ChangeUsernameComponent, 
+            { ...this.dialogConfig, data: this.roomCode }
+        );
+    }
+
+    // * END Change username functions * //
 
     public ngOnDestroy(): void {
         this.subscriptions.forEach(sub => sub.unsubscribe());

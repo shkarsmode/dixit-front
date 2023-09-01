@@ -1,5 +1,5 @@
 import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
-import { DeviceUtilityService } from 'src/app/utils/device-utility.service';
+import { DeviceUtilityService } from 'src/app/shared/utils/device-utility.service';
 
 @Component({
     selector: 'app-custom-cursor',

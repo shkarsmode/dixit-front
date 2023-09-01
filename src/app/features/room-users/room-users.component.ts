@@ -1,5 +1,5 @@
 import { Component, Input, OnInit } from '@angular/core';
-import { IUser } from 'src/shared/interfaces/IUser';
+import { IUser } from 'src/app/shared/interfaces/IUser';
 
 @Component({
     selector: 'app-room-users',

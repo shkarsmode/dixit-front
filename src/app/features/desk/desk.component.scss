@@ -8,6 +8,48 @@
 	margin-top: -50px;
 }
 
+.wrap-backdrop {
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	flex-direction: column;
+
+	&.preview {
+		position: fixed;
+		top: 0px;
+		left: 0px;
+		width: 100%;
+		height: 100%;
+		overflow: hidden;
+		background-color: rgb(9 9 9 / 24%);
+		backdrop-filter: blur(5px);
+		transition: all .3s;
+
+		// animation: anim-showing-preview 1s forwards;
+		z-index: 100;
+
+		button {
+			opacity: 1;
+			transition: all .3s;
+		}
+
+		.wrap {
+			position: absolute;
+			transition: all .3s;
+			box-shadow: -6px 10px 8px 0px rgb(0 0 0 / 5%);
+		}
+	}
+
+	&.hidden {
+		pointer-events: none;
+		opacity: 0;
+		background-color: rgb(9 9 9 / 0%);
+
+		button {
+			opacity: 0;
+		}
+	}
+}
 
 .wrap-state {
 	position: absolute;
@@ -23,7 +65,12 @@
 
 	font-family: "Montserrat", sans-serif;
 
-	z-index: 2;
+	// z-index: 2;
+	pointer-events: none;
+
+	&:has(.next-round) {
+		pointer-events: auto;
+	}
 
 	h1 {
 		font-family: "Montserrat", sans-serif;
@@ -39,6 +86,8 @@
 	}
 
 	b {
+		text-align: center;
+		line-height: 26px;
 		font-size: 30px;
 		font-weight: bold;
 		filter: drop-shadow(0px 0px 3px rgba(0, 0, 0, 0.405));
@@ -174,9 +223,54 @@
 }
 
 .card-container {
+	position: relative;
+	left: 0px;
+	top: 0px;
+
 	user-select: none;
-	transition: transform 0.3s;
+	transition: all .3s;
 	border-radius: 10px;
+
+	button {
+		position: absolute;
+		color: black;
+		width: auto;
+		background: #d9e9f0;
+
+		&.close {
+			display: flex;
+			justify-content: center;
+			align-items: center;
+			left: 0;
+			top: -29px;
+			width: 20px;
+			height: 20px;
+			border-radius: 50%;
+			font-weight: 700;
+			font-size: 12px;
+			outline: none;
+			border: none;
+
+			box-shadow: -1px 2px 3px 1px #17171752;
+
+			span {
+				font-size: 15px;
+			}
+
+			::ng-deep.mdc-button__label span {
+				display: flex;
+			}
+		}
+
+		&.vote-button {
+			bottom: -30px;
+			font-size: 10px;
+			z-index: 1;
+			width: 100%;
+			height: 25px;
+		}
+	}
+	
 
 	.stock {
 		top: -190px;
@@ -338,7 +432,7 @@ img {
 	}
 }
 
-button {
+button.next-round {
 	width: 280px;
 	height: 35px;
 	// background: linear-gradient(158deg, #1f90fff2, #0161aac4) !important;
@@ -537,6 +631,7 @@ button {
 	}
 }
 
+
 @media (max-width: 700px) {
 	.wrap-cards {
 		&.large {
@@ -570,10 +665,19 @@ button {
 
 @media (max-width: 600px) {
 	.wrap-state {
+		&:has(.reverse) {
+			flex-direction: column-reverse;
+			h1 {
+				font-size: 14px;
+			}
+		}
+
 		h1 {
-			display: none;
+			font-size: 26px;
 		}
 	}
+
+	
 	.wrap-cards {
 		&.medium {
 			.card {
@@ -603,6 +707,18 @@ button {
 			.card {
 				width: 80px;
 				height: 110px;
+			}
+		}
+	}
+}
+
+@media (max-height: 710px) {
+	.wrap-state {
+		top: 10px;
+		
+		&:has(.next-round) {
+			h1 {
+				margin-bottom: 5px;
 			}
 		}
 	}

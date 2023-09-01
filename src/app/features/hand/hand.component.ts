@@ -1,5 +1,6 @@
 import { Component, EventEmitter, HostListener, Input, Output } from '@angular/core';
-import { DeviceUtilityService } from 'src/app/utils/device-utility.service';
+import { States } from 'src/app/shared/interfaces/states.enum';
+import { DeviceUtilityService } from 'src/app/shared/utils/device-utility.service';
 
 @Component({
     selector: 'app-hand',
@@ -10,12 +11,13 @@ export class HandComponent {
 
     @Input() public cardsOnTheTable: string[] = [];
     @Input() public hand: string[];
-    @Input() public hasAssociation: boolean = false;
+    @Input() public state: States;
     @Output() chooseCard: EventEmitter<string> = new EventEmitter();
 
     public isShowFirstCard: boolean = true;
     public isMobileDevice: boolean = false;
     public previewCard: string = '';
+    
 
     constructor(
         private deviceUtilityService: DeviceUtilityService
@@ -32,6 +34,15 @@ export class HandComponent {
 
     public choose(card: string): void {
         this.chooseCard.emit(card);
+    }
+
+    public get canToChoose(): boolean {
+        switch(this.state) {
+            case States.ChooseCardAsHeader:
+            case States.ChooseCard: return true;
+        }
+        
+        return false;
     }
 
     private async firstShowCards(): Promise<void> {

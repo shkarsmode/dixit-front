@@ -357,3 +357,17 @@ app-room-users {
 		}
 	}
 }
+
+@media (max-width: 450px) {
+	.wrap-info-center {
+		h2 {
+			font-size: 40px;
+		}
+	}
+}
+
+@media (max-height: 700px) {
+	app-room-users {
+		top: 140px;
+	}
+}

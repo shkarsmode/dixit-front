@@ -1,10 +1,11 @@
-import { Component, EventEmitter, Input, OnDestroy, OnInit, Output } from '@angular/core';
-import { Subscription } from 'rxjs';
-import { IResults } from 'src/shared/interfaces/IResults';
-import { IUser } from 'src/shared/interfaces/IUser';
-import { States } from 'src/shared/interfaces/states.enum';
-import { UserService } from 'src/shared/services/user.service';
-import { DeskService } from '../../../shared/services/desk.service';
+import { Component, ElementRef, EventEmitter, Input, OnDestroy, OnInit, Output, ViewChild } from '@angular/core';
+import { Subscription, interval, takeWhile } from 'rxjs';
+import { IResults } from 'src/app/shared/interfaces/IResults';
+import { IUser } from 'src/app/shared/interfaces/IUser';
+import { States } from 'src/app/shared/interfaces/states.enum';
+import { DeskService } from 'src/app/shared/services/desk.service';
+import { UserService } from 'src/app/shared/services/user.service';
+import { DeviceUtilityService } from '../../shared/utils/device-utility.service';
 
 @Component({
     selector: 'app-desk',
@@ -28,6 +29,9 @@ export class DeskComponent implements OnInit, OnDestroy {
     @Input() public myCardOnTheDeck: string = '';
 
     @Input() public state: States = States.NotStarted;
+
+    @ViewChild('wrapCards', { static: false }) wrapCards: ElementRef;
+
     public readonly States: typeof States = States;
 
     public isRotateCards: boolean = false;
@@ -40,23 +44,29 @@ export class DeskComponent implements OnInit, OnDestroy {
     public readonly format: string = '.png';
     public chosenCard: string = '';
     public isEmittedNextRound: boolean = false;
+    public isMobileDevice: boolean;
+    public previewCard: string = '';
 
+    private cardsInitialValues: 
+        Array<{ 
+            top: number,
+            left: number,
+            width: number, 
+            height: number,
+            zIndex: string,
+            cardElement: HTMLDivElement
+        }> = [];
     private subscriptions: Subscription[] = [];
 
     constructor(
         private deskService: DeskService,
-        private userService: UserService
+        private userService: UserService,
+        private deviceUtilityService: DeviceUtilityService
     ) {}
 
     public ngOnInit(): void {
         this.subscribeOnNewRound();
-    }
-
-    public moveToNextRound(): void {
-        if (this.isEmittedNextRound) return;
-
-        this.nextRound.emit();
-        this.isEmittedNextRound = true;
+        this.checkOnMobileDevice();
     }
 
     public async ngOnChanges(): Promise<void> {
@@ -65,13 +75,58 @@ export class DeskComponent implements OnInit, OnDestroy {
                 States.ShowCardsForHeader === this.state || 
                 States.ShowCardsAndVoting === this.state || 
                 States.Results === this.state
-            ) && 
-            !this.isRotateCards && 
+            ) &&
+            !this.isRotateCards &&
             !this.isEmittedNextRound
         ) {
             await new Promise(resolve => setTimeout(resolve, 1000));
             this.isRotateCards = true;
+            this.initDefaultPositionAndSizeOfCard();
         }
+    }
+
+    private checkOnMobileDevice(): void {
+        this.isMobileDevice = this.deviceUtilityService.isMobileDevice;
+    }
+
+    private retryInitionOfDefaultPositionAndSizeOfCard(): void {
+        let success = false;
+        interval(500)
+            .pipe(takeWhile(() => !success))
+            .subscribe(() => {
+                if (this.wrapCards) {
+                    success = true;
+                    this.initDefaultPositionAndSizeOfCard();
+                    return;
+                }
+        });
+    }
+
+    private async initDefaultPositionAndSizeOfCard(): Promise<void> {
+        if (!this.wrapCards) {
+            this.retryInitionOfDefaultPositionAndSizeOfCard();
+            return;
+        }
+        
+        await new Promise(resolve => setTimeout(resolve, 1000));
+        this.cardsInitialValues = [];
+        
+        const arrayOfDomCards = 
+            Array.from(this.wrapCards.nativeElement.children) as Array<HTMLDivElement>;
+
+        arrayOfDomCards.forEach((card: HTMLDivElement) => {
+            const { top, left, width, height } = card.getBoundingClientRect();
+            const zIndex = card.style.zIndex;
+            this.cardsInitialValues.push({ top, left, width, height, zIndex, cardElement: card });
+        });
+
+    }
+
+    public moveToNextRound(): void {
+        if (this.isEmittedNextRound) return;
+
+        this.nextRound.emit();
+        this.isEmittedNextRound = true;
     }
 
     private subscribeOnNewRound(): void {
@@ -88,7 +143,58 @@ export class DeskComponent implements OnInit, OnDestroy {
     }
 
     private voteForThisCard(card: string): void {
-        if (this.hasMatcheResultsAndUsersLength) return;
+        if (!this.isMobileDevice) {
+            if (this.hasMatcheResultsAndUsersLength) return;
+            this.markUsersVote(card);
+            this.voteCard.emit(card);
+
+            return;
+        }
+
+        if (
+            this.cardsInitialValues.length !== this.cards.length || 
+            this.myCardOnTheDeck === card
+        ) return;
+
+        if (this.previewCard) {
+            this.backToInitialPosition(this.previewCard);
+            this.voteForThisCard(card);
+            return;
+        }
+
+        this.previewCard = card;
+        const cardIndex = this.cards.findIndex(cardFromArray => card === cardFromArray);
+        const cardToPreview = this.cardsInitialValues[cardIndex];
+
+        const windowHeight = window.innerHeight;
+        const windowWidth = window.innerWidth;
+
+        const diffHeight = windowHeight / 2 - cardToPreview.top - cardToPreview.height / 2 - 20;
+        const diffWidth = windowWidth / 2 - cardToPreview.left - cardToPreview.width / 2;
+        
+        cardToPreview.cardElement.style.top = diffHeight + 'px';
+        cardToPreview.cardElement.style.left = diffWidth + 'px';
+        cardToPreview.cardElement.style.transform = 'scale(2)';
+        cardToPreview.cardElement.style.zIndex = '11';
+    }
+
+    public async backToInitialPosition(card: string): Promise<void> {
+        if (!this.isMobileDevice) return;
+
+        this.previewCard = '';
+        const cardIndex = this.cards.findIndex(cardFromArray => card === cardFromArray);
+        const cardToPreview = this.cardsInitialValues[cardIndex];
+
+        cardToPreview.cardElement.style.top = '0px';
+        cardToPreview.cardElement.style.left = '0px';
+        cardToPreview.cardElement.style.transform = 'scale(1)';
+        
+        await new Promise(resolve => setTimeout(resolve, 300));
+        cardToPreview.cardElement.style.zIndex = cardToPreview.zIndex;
+    }
+
+    public onButtonClick(card: string): void {
+        this.backToInitialPosition(card);
         this.markUsersVote(card);
         this.voteCard.emit(card);
     }
@@ -125,8 +231,10 @@ export class DeskComponent implements OnInit, OnDestroy {
         if (
             States.ShowCardsForHeader === this.state ||
             States.Results === this.state || 
+            this.isMobileDevice ||
             this.hasMatcheResultsAndUsersLength
         ) return;
+
         this.chosenCard = '';
         cardElement.style.transform = 'scale(1)';
     }

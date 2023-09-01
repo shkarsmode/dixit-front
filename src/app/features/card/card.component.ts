@@ -10,7 +10,7 @@ export class CardComponent implements AfterViewInit {
     @Output() public chooseCard: EventEmitter<string> = new EventEmitter();
     @Input() public card: string;
     @Input() public isMobileDevice: boolean;
-    @Input() public hasAssociation: boolean;
+    @Input() public canToChoose: boolean;
 
     @ViewChild('cardRef', { static: true }) private cardRef: ElementRef;
     @ViewChild('previewCardRef', { static: true }) private previewCardRef: ElementRef;

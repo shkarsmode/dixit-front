@@ -7,7 +7,7 @@
 	</ng-template>
 
 	<ng-template [ngSwitchCase]="States.ChooseCard">
-		<h1>Choose card rely on this association</h1>
+		<h1 class="reverse">Choose card rely on this association</h1>
 		<b>{{ association }}</b>
 	</ng-template>
 
@@ -16,7 +16,7 @@
 	</ng-template>
 
 	<ng-template [ngSwitchCase]="States.ShowCardsAndVoting">
-		<h1>Vote for the card by clicking on it</h1>
+		<h1 class="reverse">Vote for the card by clicking on it</h1>
 		<b>{{ association }}</b>
 	</ng-template>
 
@@ -27,6 +27,7 @@
 	<ng-template [ngSwitchCase]="States.Results">
 		<h1 *ngIf="!isEmittedNextRound">Results</h1>
 		<button
+			class="next-round"
 			*ngIf="!isEmittedNextRound" 
 			(click)="moveToNextRound()" 
 			activeCursor>
@@ -90,6 +91,7 @@
 	<ng-template [ngIf]="isRotateCards">
 		<div 
 			class="wrap-cards"
+			#wrapCards
 			[ngClass]="getCardLayoutClass(cards.length)">
 			<div 
 				*ngFor="let card of cards; index as cardIndex"
@@ -102,6 +104,22 @@
 				(mouseup)="onMouseUp(cardElement, card)"
 				(mouseleave)="onMouseLeave(cardElement)"
 				(mousedown)="onMouseDown(cardElement, card)">
+				<button
+					*ngIf="previewCard === card"
+					class="vote-button"
+					(click)="onButtonClick(card)"
+					mat-raised-button>
+					Vote For The Card
+				</button>
+				<button
+					*ngIf="previewCard === card"
+					(click)="backToInitialPosition(card)"
+					class="close"
+					mat-fab>
+					<span class="material-symbols-outlined">
+						close
+					</span>
+				</button>
 				<div
 					class="card active"
 					activeCursor

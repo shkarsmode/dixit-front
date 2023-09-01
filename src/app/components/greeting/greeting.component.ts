@@ -1,7 +1,7 @@
 import { Component, ElementRef, HostListener, QueryList, ViewChild, ViewChildren } from '@angular/core';
 import { Router } from '@angular/router';
 import { Socket } from 'ngx-socket-io';
-import { UserService } from '../../../shared/services/user.service';
+import { UserService } from 'src/app/shared/services/user.service';
 
 @Component({
     selector: 'app-greeting',

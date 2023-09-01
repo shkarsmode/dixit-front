@@ -11,7 +11,7 @@
 	</div>
 </div>
 
-<!-- <app-admin-panel></app-admin-panel> -->
+<app-admin-panel *ngIf="isAdmin"></app-admin-panel>
 
 <div class="wrap-game-area" *ngIf="state !== statesEnum.NotStarted">
 
@@ -45,14 +45,9 @@
 		</mat-form-field>
 	</div>
 
-	<app-hand 
-		[ngClass]="{
-			'put-down': 
-				States.ShowCardsForHeader === state ||
-				States.ShowCardsAndVoting === state ||
-				States.Results === state
-		}"
-		[hasAssociation]="!!association"
+	<app-hand
+		[ngClass]="{'put-down': isPutDownHand}"
+		[state]="state"
 		(chooseCard)="chooseCard($event)"
 		[hand]="handCards"
 		[cardsOnTheTable]="cardsOnTheDesk">

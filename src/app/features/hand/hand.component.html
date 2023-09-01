@@ -9,8 +9,8 @@
 		activeCursor
 		*ngFor="let card of hand; index as i"
 		[card]="card"
+		[canToChoose]="canToChoose"
 		[isMobileDevice]="isMobileDevice"
-		[hasAssociation]="hasAssociation"
 		(chooseCard)="choose(card)"
 		[style]="'--i:' + i">
 	</app-card>
