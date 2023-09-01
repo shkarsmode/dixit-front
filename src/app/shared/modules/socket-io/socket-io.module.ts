@@ -3,7 +3,7 @@ import { NgModule } from '@angular/core';
 import { SocketIoConfig, SocketIoModule as SoketModule } from 'ngx-socket-io';
 
 const config: SocketIoConfig = { 
-    url: 'http://localhost:3000', 
+    url: 'https://dixit-back.vercel.app', 
     options: {
         withCredentials: true,
         transports: ['websocket']
