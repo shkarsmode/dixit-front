@@ -8,7 +8,7 @@ const config: SocketIoConfig = {
         withCredentials: true,
         transports: ['websocket'],
         extraHeaders: {
-            'ngrok-skip-browser-warning': 'true',
+            'ngrok-skip-browser-warning': '69420',
         },
     },
 };
