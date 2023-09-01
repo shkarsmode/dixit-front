@@ -1,6 +1,7 @@
 import { NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
 
+import { HTTP_INTERCEPTORS } from '@angular/common/http';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { AppRoutingModule } from './app-routing.module';
@@ -16,6 +17,7 @@ import { HandComponent } from './features/hand/hand.component';
 import { RoomUsersComponent } from './features/room-users/room-users.component';
 import { ChangeUsernameComponent } from './shared/dialogs/change-username/change-username.component';
 import { ActiveCursorDirective } from './shared/directives/active-cursor.directive';
+import { HeaderInterceptor } from './shared/helpers/header.interceptor';
 import { MaterialModule } from './shared/modules/materials/material.module';
 import { SocketModule } from './shared/modules/socket-io/socket-io.module';
 
@@ -43,7 +45,9 @@ import { SocketModule } from './shared/modules/socket-io/socket-io.module';
         BrowserAnimationsModule,
         ReactiveFormsModule
     ],
-    providers: [],
+    providers: [
+        { provide: HTTP_INTERCEPTORS, useClass: HeaderInterceptor, multi: true }
+    ],
     bootstrap: [AppComponent]
 })
 export class AppModule { }
