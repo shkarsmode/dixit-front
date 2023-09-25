@@ -1,3 +1,10 @@
+:host {
+	position: absolute;
+	right: 10px;
+	top: 200px;
+	z-index: 1;
+}
+
 .wrap-users {
 	box-shadow: 0px 0px 5px 5px #1e1e1e0f;
 	padding: 10px;
@@ -277,6 +284,15 @@ td {
 	transition: top .5s;
 }
 
+
+@media (max-width: 1020px) {
+	:host {
+		transform: scale(0.9);
+		right: 0px;
+	}
+
+}
+
 @media (max-width: 1000px) {
 	main {
 		width: 180px;
@@ -293,5 +309,11 @@ td {
 
 	.name {
 		width: 105px;
+	}
+}
+
+@media (max-height: 700px) {
+	:host {
+		top: 140px;
 	}
 }

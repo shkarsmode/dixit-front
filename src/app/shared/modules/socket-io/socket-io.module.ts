@@ -3,7 +3,7 @@ import { NgModule } from '@angular/core';
 import { SocketIoConfig, SocketIoModule as SoketModule } from 'ngx-socket-io';
 
 const config: SocketIoConfig = { 
-    url: 'http://18.159.206.65:3000', 
+    url: 'localhost:3000', 
     options: {
         withCredentials: true,
         transports: ['websocket'],

@@ -1,4 +1,4 @@
-import { Component, EventEmitter, HostListener, Input, Output } from '@angular/core';
+import { Component, EventEmitter, HostBinding, HostListener, Input, Output } from '@angular/core';
 import { States } from 'src/app/shared/interfaces/states.enum';
 import { DeviceUtilityService } from 'src/app/shared/utils/device-utility.service';
 
@@ -13,6 +13,9 @@ export class HandComponent {
     @Input() public hand: string[];
     @Input() public state: States;
     @Output() chooseCard: EventEmitter<string> = new EventEmitter();
+
+    @Input() 
+    @HostBinding('class.put-down') isPutDown: boolean = false;
 
     public isShowFirstCard: boolean = true;
     public isMobileDevice: boolean = false;

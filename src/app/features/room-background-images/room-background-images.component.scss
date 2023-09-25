@@ -1,0 +1,163 @@
+:host {
+	position: absolute;
+	height: 100%;
+	width: 100%;
+	top: 0px;
+
+	pointer-events: none;
+
+	overflow: hidden;
+
+}
+
+img {
+	position: absolute;
+	pointer-events: none;
+	transition: width .4s;
+
+	&:nth-child(1) {
+		top: -80px;
+		right: 200px;
+		z-index: 1;
+		width: 390px;
+		height: auto;
+		animation: anim-sky 15s cubic-bezier(0, 0, 0.58, 1.13) infinite;
+		opacity: 0.9;
+	}
+
+	&:nth-child(2) {
+		top: -70px;
+		left: 130px;
+		z-index: 1;
+		width: 340px;
+		height: auto;
+		animation: anim-sky 12s -4s cubic-bezier(0, 0, 0.58, 1.13) infinite;
+		opacity: 0.8;
+	}
+
+	&:nth-child(3) {
+		top: 15px;
+		right: 15px;
+		width: 290px !important;
+		height: auto;
+		animation: anim-sky 10s 0.2s cubic-bezier(0, 0, 0.58, 1.13) infinite;
+		opacity: 0.6;
+	}
+
+	&:nth-child(4) {
+		top: 30px;
+		left: -15px;
+		width: 290px !important;
+		height: auto;
+		animation: anim-sky 8s 0.3s cubic-bezier(0, 0, 0.58, 1.13) infinite;
+		opacity: 0.6;
+	}
+
+	&:nth-child(5) {
+		bottom: 0px;
+		right: -15px;
+		width: 300px !important;
+		height: auto;
+		filter: drop-shadow(-10px 10px 8px rgba(8, 8, 8, 0.205));
+	}
+
+	&:nth-child(6) {
+		bottom: -20px;
+		left: -15px;
+		width: 400px !important;
+		height: auto;
+		filter: drop-shadow(10px 10px 8px rgba(8, 8, 8, 0.405));
+	}
+}
+
+@keyframes anim-sky {
+	0% {
+		transform: translateX(0px);
+	}
+
+	40% {
+		transform: translateX(80px);
+	}
+
+
+	80% {
+		transform: translateX(20px);
+	}
+
+	100% {
+		transform: translateX(0px);
+	}
+}
+
+@media (max-width: 1500px) {
+	img {
+		&:nth-child(1) {
+			top: -45px;
+			right: 100px;
+			width: 280px;
+		}
+
+		&:nth-child(2) {
+			top: -30px;
+			left: 100px;
+			width: 240px;
+		}
+
+		&:nth-child(3) {
+			top: 15px;
+			right: 15px;
+			width: 140px !important;
+		}
+
+		&:nth-child(4) {
+			top: 30px;
+			left: -15px;
+			width: 140px !important;
+		}
+
+		&:nth-child(5) {
+			bottom: 0px;
+			right: -15px;
+			width: 250px !important;
+		}
+
+		&:nth-child(6) {
+			bottom: -20px;
+			left: -15px;
+			width: 350px !important;
+		}
+	}
+}
+
+
+@media (max-width: 700px) {
+	img {
+		&:nth-child(1) {
+			top: -25px;
+			right: 60px;
+			width: 140px;
+		}
+
+		&:nth-child(2) {
+			top: -20px;
+			left: 60px;
+			width: 120px;
+		}
+
+		&:nth-child(3) {
+			top: 15px;
+			right: 15px;
+			width: 80px !important;
+		}
+
+		&:nth-child(4) {
+			top: 30px;
+			left: -15px;
+			width: 80px !important;
+		}
+
+		&:nth-child(5), &:nth-child(6) {
+			display: none;
+		}
+	}
+}

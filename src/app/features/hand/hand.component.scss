@@ -1,3 +1,12 @@
+:host {
+	position: absolute;
+	width: 100%;
+	display: flex;
+	justify-content: center;
+	bottom: -40px;
+	transition: bottom 0.5s;	
+}
+
 .wrap {
 	display: flex;
 	transition: all .3s;
@@ -113,7 +122,6 @@ app-card {
 		animation: showing 0.3s forwards;
 		animation-delay: calc(var(--i) * 0.4s);
 	}
-
 }
 
 @keyframes showing {
@@ -126,8 +134,17 @@ app-card {
 	}
 }
 
+@media (max-width: 1600px) {
+	:host {
+		z-index: 1;
+	}
+}
 
 @media (max-width: 800px) {
+	:host-context(.put-down) {
+		bottom: -100px;
+	}
+	
 	app-card {
 		transform: none !important;
 		margin-top: 0;

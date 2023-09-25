@@ -8,13 +8,14 @@ import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { AdminPanelComponent } from './components/admin-panel/admin-panel.component';
 import { GreetingComponent } from './components/greeting/greeting.component';
-import { PendingComponent } from './components/pending/pending.component';
 import { RoomComponent } from './components/room/room.component';
 import { CardComponent } from './features/card/card.component';
 import { CustomCursorComponent } from './features/custom-cursor/custom-cursor.component';
 import { DeskComponent } from './features/desk/desk.component';
 import { HandComponent } from './features/hand/hand.component';
+import { RoomBackgroundImagesComponent } from './features/room-background-images/room-background-images.component';
 import { RoomUsersComponent } from './features/room-users/room-users.component';
+import { RoomWaitingFlowComponent } from './features/room-waiting-flow/room-waiting-flow.component';
 import { ChangeUsernameComponent } from './shared/dialogs/change-username/change-username.component';
 import { ActiveCursorDirective } from './shared/directives/active-cursor.directive';
 import { HeaderInterceptor } from './shared/helpers/header.interceptor';
@@ -26,7 +27,6 @@ import { SocketModule } from './shared/modules/socket-io/socket-io.module';
         AppComponent,
         RoomComponent,
         AdminPanelComponent,
-        PendingComponent,
         CardComponent,
         HandComponent,
         GreetingComponent,
@@ -34,7 +34,9 @@ import { SocketModule } from './shared/modules/socket-io/socket-io.module';
         ActiveCursorDirective,
         RoomUsersComponent,
         DeskComponent,
-        ChangeUsernameComponent
+        ChangeUsernameComponent,
+        RoomWaitingFlowComponent,
+        RoomBackgroundImagesComponent
     ],
     imports: [
         BrowserModule,

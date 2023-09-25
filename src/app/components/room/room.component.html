@@ -1,20 +1,13 @@
-<div class="wrap-info" *ngIf="state === statesEnum.NotStarted">
-	<div class="wrap-info-center">
-		<h2>Room - <b activeCursor>{{ roomCode }}</b></h2>
-		<h4>Users connected - <b>{{ countOfUsers }}</b></h4>
-		<button 
-			(click)="leaveRoom()" 
-			activeCursor 
-			mat-raised-button>
-			Leave room
-		</button>
-	</div>
-</div>
+<app-room-waiting-flow 
+	*ngIf="state === statesEnum.NotStarted"
+	[roomCode]="roomCode"
+	[countOfUsers]="countOfUsers"
+	(leaveRoom)="leaveRoom()">
+</app-room-waiting-flow>
 
-<app-admin-panel *ngIf="isAdmin"></app-admin-panel>
-
-<div class="wrap-game-area" *ngIf="state !== statesEnum.NotStarted">
-
+<div 
+	*ngIf="state !== statesEnum.NotStarted"
+	class="wrap-game-area">
 	<app-desk
 		[cards]="cardsOnTheDesk"
 		[cardsForBack]="cardsForBack"
@@ -33,7 +26,9 @@
 		[isResults]="States.Results === state">
 	</app-room-users>
 
-	<div *ngIf="States.ChooseCardAsHeader === state" class="wrap-info-center">
+	<div 
+		*ngIf="States.ChooseCardAsHeader === state" 
+		class="wrap-info-center">
 		<h3>You have to write the association and choose the card</h3>
 		<mat-form-field>
 			<mat-label>Your association</mat-label>
@@ -46,14 +41,18 @@
 	</div>
 
 	<app-hand
-		[ngClass]="{'put-down': isPutDownHand}"
 		[state]="state"
-		(chooseCard)="chooseCard($event)"
 		[hand]="handCards"
-		[cardsOnTheTable]="cardsOnTheDesk">
+		[isPutDown]="isPutDownHand"
+		[cardsOnTheTable]="cardsOnTheDesk"
+		(chooseCard)="chooseCard($event)">
 	</app-hand>
 </div>
 
+<app-admin-panel *ngIf="isAdmin"></app-admin-panel>
+
+
+<app-room-background-images></app-room-background-images>
 
 
 
@@ -62,19 +61,3 @@
 
 
 
-
-
-
-<div class="wrap-sky">
-	<img width="490" height="322" src="https://www.libellud.com/wp-content/themes/libellud-theme/images/machine_nuage.png" alt="Nuage" id="machine_nuage_1" data-ll-status="loaded" class="entered lazyloaded">
-
-	<img width="490" height="322" src="https://www.libellud.com/wp-content/themes/libellud-theme/images/machine_nuage.png" alt="Nuage" id="machine_nuage_2" data-ll-status="loaded" class="entered lazyloaded">
-
-	<img width="366" height="142" src="https://www.libellud.com/wp-content/themes/libellud-theme/images/genie_nuage_3.png" alt="Nuage" id="nuage_3" style="width:366px" data-lazy-src="https://www.libellud.com/wp-content/themes/libellud-theme/images/genie_nuage_3.png" data-ll-status="loaded" class="entered lazyloaded">
-
-	<img width="366" height="142" src="https://www.libellud.com/wp-content/themes/libellud-theme/images/genie_nuage_3.png" alt="Nuage" id="nuage_3" style="width:366px" data-lazy-src="https://www.libellud.com/wp-content/themes/libellud-theme/images/genie_nuage_3.png" data-ll-status="loaded" class="entered lazyloaded">
-
-	<img width="430" height="617" src="https://www.libellud.com/wp-content/themes/libellud-theme/images/studio/machine-page-entete.png" alt="Machine et moutons" class="machine entered lazyloaded" style="width:430px" data-lazy-src="https://www.libellud.com/wp-content/themes/libellud-theme/images/studio/machine-page-entete.png" data-ll-status="loaded">
-
-	<img width="528" height="490" src="https://www.libellud.com/wp-content/themes/libellud-theme/images/studio/stella-page-entete.png" alt="Dixit Stella" class="stella entered lazyloaded" style="width:528px" data-lazy-src="https://www.libellud.com/wp-content/themes/libellud-theme/images/studio/stella-page-entete.png" data-ll-status="loaded">
-</div>

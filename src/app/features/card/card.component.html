@@ -1,23 +1,24 @@
 <div 
-	#cardRef
-	[ngClass]="{'hidden': isPreviewCard}"
-	class="wrap" 
-	(click)="choose()">
+	[class.hidden]="isPreviewCard"
+	class="wrap"
+	(click)="choose()"
+	#cardRef>
 	<img [src]="pathToDixitCards + card + format">
 </div>
 
-
 <div 
 	class="wrap-backdrop preview" 
-	[ngClass]="{'hidden': !isPreviewCard}"
+	[class.hidden]="!isPreviewCard"
 	(click)="backToInitialPosition()">
-	<div class="wrap" #previewCardRef>
+	<div 
+		class="wrap" 
+		#previewCardRef>
 		<img [src]="pathToDixitCards + card + format">
 	</div>
 	<button 
 		*ngIf="canToChoose" 
-		mat-raised-button 
-		(click)="onButtonClick()">
+		(click)="onButtonClick()"
+		mat-raised-button>
 		Choose Card
 	</button>
 </div>

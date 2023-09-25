@@ -1,28 +1,8 @@
-<!-- <div class="wrap-users">
-	<table>
-		<tr>
-			<th>Score</th>
-			<th>Nickname</th>
-		</tr>
-		<tr 
-			[class]="'user ' + user.color" 
-			*ngFor="let user of users">
-			<td>{{ user.score }}</td>
-			<td>{{ user.username }}</td>
-			<div class="mark" *ngIf="user.isHeader">
-				<span class="material-symbols-outlined">
-					flag
-				</span>
-			</div>
-		</tr>
-	</table>
-</div> -->
-
-<main [ngClass]="{'hide': !isShowLeaderBoard}">
+<main [class.hide]="!isShowLeaderBoard">
 	<div 
 		id="header"
-		activeCursor 
-		(click)="toggleLeaderboard()">
+		(click)="toggleLeaderboard()"
+		activeCursor>
 		<h1>Score</h1>
 		<span 
 			*ngIf="isShowLeaderBoard" 
@@ -37,7 +17,7 @@
 	</div>
 	<div 
 		id="leaderboard" 
-		[ngClass]="{
+		[class]="{
 			'hide': !isShowLeaderBoard,
 			'hide-border-radius': indexOfUserHeader === users.length - 1
 		}">
@@ -47,11 +27,11 @@
 		<table>
 			<tr 
 				*ngFor="let user of users" 
-				[ngClass]="{'is-header': user.isHeader}">
+				[class.is-header]="user.isHeader">
 				<td class="number">
 					<div 
 						[class]="'square ' + user.color" 
-						[ngClass]="{'watching': isResults && !user.isReadyToNextRound}">
+						[class.watching]="isResults && !user.isReadyToNextRound">
 					</div>
 				</td>
 				<td class="name">{{ user.username }}</td>

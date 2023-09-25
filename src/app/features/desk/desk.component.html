@@ -75,7 +75,7 @@
 	<h1 *ngIf="isEmittedNextRound">Wait for the rest...</h1>
 </div> -->
 
-<div class="wrap" [ngClass]="{'anim-desk': isRotateCards }">
+<div class="wrap" [class.anim-desk]="isRotateCards">
 	<ng-template [ngIf]="!isRotateCards">
 		<div 
 			*ngFor="let card of cardsForBack"
@@ -91,19 +91,19 @@
 	<ng-template [ngIf]="isRotateCards">
 		<div 
 			class="wrap-cards"
-			#wrapCards
-			[ngClass]="getCardLayoutClass(cards.length)">
+			[class]="getCardLayoutClass(cards.length)"
+			#wrapCards>
 			<div 
 				*ngFor="let card of cards; index as cardIndex"
 				class="card-container"
-				[ngClass]="{
+				[class]="{
 					'admin-card': isHeaderCard(card),
 					'my-card': myCardOnTheDeck === card
 				}"
-				#cardElement
 				(mouseup)="onMouseUp(cardElement, card)"
 				(mouseleave)="onMouseLeave(cardElement)"
-				(mousedown)="onMouseDown(cardElement, card)">
+				(mousedown)="onMouseDown(cardElement, card)"
+				#cardElement>
 				<button
 					*ngIf="previewCard === card"
 					class="vote-button"
@@ -113,8 +113,8 @@
 				</button>
 				<button
 					*ngIf="previewCard === card"
-					(click)="backToInitialPosition(card)"
 					class="close"
+					(click)="backToInitialPosition(card)"
 					mat-fab>
 					<span class="material-symbols-outlined">
 						close
@@ -122,16 +122,18 @@
 				</button>
 				<div
 					class="card active"
-					activeCursor
-					[style]="'--i:'+ (+cardIndex - (0.3)*cardIndex) + 's'">
-					<div class="wrap-votes" *ngIf="results.length">
+					[style]="'--i:'+ (+cardIndex - (0.3)*cardIndex) + 's'"
+					activeCursor>
+					<div
+						*ngIf="results.length" 
+						class="wrap-votes">
 						<ng-container *ngFor="let result of results;">
 							<ng-template [ngIf]="result.card === card">
 								<div
 									*ngFor="let color of result.votes; index as voteIndex"
 									class="vote"
 									[style]="'--i:' + ((0.5) * voteIndex) + 's'"
-									[ngClass]="color">
+									[class]="color">
 								</div>
 							</ng-template>
 						</ng-container>

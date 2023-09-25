@@ -2,7 +2,7 @@ import { Component } from '@angular/core';
 import { MatDialog, MatDialogConfig } from '@angular/material/dialog';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Socket } from 'ngx-socket-io';
-import { Subscription } from 'rxjs';
+import { Subject, takeUntil } from 'rxjs';
 import { ChangeUsernameComponent } from 'src/app/shared/dialogs/change-username/change-username.component';
 import { IResults } from 'src/app/shared/interfaces/IResults';
 import { IUser } from 'src/app/shared/interfaces/IUser';
@@ -36,9 +36,10 @@ export class RoomComponent {
     public usersScore: Array<[string, number]>;
     public users: IUser[];
 
+    private isJoinedToRoom: boolean = false;
     private socket: Socket;
     private dialogConfig: MatDialogConfig = new MatDialogConfig();
-    private subscriptions: Subscription[] = [];
+    private destroy$: Subject<void> = new Subject();
     
 
     constructor(
@@ -69,17 +70,14 @@ export class RoomComponent {
         this.checkIsUserDoesntHasName();
     }
 
-    private subscribeOnPingConnection(): void {
-        const sub = 
-            this.socket.fromEvent<string>('connectedToServer')
-                .subscribe((userId: string) => {
-                    console.log(userId);
-                    if (this.roomCode) {
-                        this.joinRoom();
-                    }
-                });
-
-        this.subscriptions.push(sub);
+    private subscribeOnPingConnection(): void { 
+        this.socket.fromEvent<string>('connectedToServer')
+            .pipe(takeUntil(this.destroy$))
+            .subscribe((userId: string) => {
+                if (this.roomCode) {
+                    this.joinRoom();
+                }
+            });
     }
 
     private checkIsUserDoesntHasName(): void {
@@ -95,64 +93,53 @@ export class RoomComponent {
     }
 
     private subscibeOnRoomCodeChange(): void {
-        const sub = 
-            this.route.params.subscribe(params => {
+        this.route.params
+            .pipe(takeUntil(this.destroy$))
+            .subscribe(params => {
                 const roomCode = params['roomCode'];
                 this.handleChangedRoomCode(roomCode);
             });
-
-        this.subscriptions.push(sub);
     }
 
     private subscribeOnChangeScore(): void {
-        const sub = 
-            this.socket.fromEvent<Map<string, number>>('changeScore')
-                .subscribe((usersScore: Map<string, number>) => {
-                    for (const userScore of usersScore) {
-                        this.usersScore.push([userScore[0], userScore[1]]);
-                    }
-                });
-
-        this.subscriptions.push(sub);
+        this.socket.fromEvent<Map<string, number>>('changeScore')
+            .pipe(takeUntil(this.destroy$))
+            .subscribe((usersScore: Map<string, number>) => {
+                for (const userScore of usersScore) {
+                    this.usersScore.push([userScore[0], userScore[1]]);
+                }
+            });
     }
 
     private subscribeOnUsers(): void {
-        const sub = 
-            this.socket.fromEvent<IUser[]>('users')
-                .subscribe((users: IUser[]) => {
-                    this.users = users;
-                    this.userService.setCurrentUser(this.users);
-                });
-
-        this.subscriptions.push(sub)
+        this.socket.fromEvent<IUser[]>('users')
+            .pipe(takeUntil(this.destroy$))
+            .subscribe((users: IUser[]) => {
+                this.users = users;
+                this.userService.setCurrentUser(this.users);
+            });
     }
 
     
     private subscribeOnVotingResults(): void {
-        const sub = 
-            this.socket.fromEvent<IResults>('votingResults')
-                .subscribe((results: IResults) => {
-                    this.results = results;
-                    console.log('results', results);
-                });
-
-        this.subscriptions.push(sub)
+        this.socket.fromEvent<IResults>('votingResults')
+            .pipe(takeUntil(this.destroy$))
+            .subscribe((results: IResults) => {
+                this.results = results;
+            });
     }
     
     private subscibeOnCardsForTheDesk(): void {
-        const sub = 
-            this.socket.fromEvent<string>('cardForTheDesk')
-                .subscribe((card: string) => {
-                    if (this.handCards.indexOf(card) !== -1) {
-                        // * A bit later add some animation here
-                        this.handCards = this.handCards.filter(handCard => handCard !== card);
-                    }
-                    this.cardsForBack.push(card);
-                    this.cardsOnTheDesk.push(card);
-                    this.shuffleCards();
-                });
-
-        this.subscriptions.push(sub);
+        this.socket.fromEvent<string>('cardForTheDesk')
+            .pipe(takeUntil(this.destroy$))
+            .subscribe((card: string) => {
+                if (this.handCards.indexOf(card) !== -1) {
+                    this.handCards = this.handCards.filter(handCard => handCard !== card);
+                }
+                this.cardsForBack = [...this.cardsForBack, 'card'];
+                this.cardsOnTheDesk = [...this.cardsOnTheDesk, card];
+                this.shuffleCards();
+            });
     }
 
     private shuffleCards() {
@@ -179,11 +166,13 @@ export class RoomComponent {
     }
 
     private joinRoom(): void {
+        if (this.isJoinedToRoom) return;
+        this.isJoinedToRoom = true;
+        
         this.socket.emit(
             'joinRoom', 
             this.roomCode,
             (user: IUser) => {
-                console.log(user);
                 if (!user) {
                     console.log('No room was found');
                     this.router.navigate(['/']);
@@ -194,30 +183,21 @@ export class RoomComponent {
     }
 
     private subscribeOnCountOfUsers(): void {
-        const sub = 
-            this.socket.fromEvent<number>('joinRoom')
-                .subscribe((count: number) => this.countOfUsers = count);
-
-        this.subscriptions.push(sub);
+        this.socket.fromEvent<number>('joinRoom')
+            .pipe(takeUntil(this.destroy$))
+            .subscribe((count: number) => this.countOfUsers = count);
     }
 
-    private subscribeOnChangeState(): void {
-        const sub = 
-            this.socket.fromEvent<States>('changeState')
-                .subscribe(this.handleStateChange.bind(this));
-
-        this.subscriptions.push(sub);
+    private subscribeOnChangeState(): void { 
+        this.socket.fromEvent<States>('changeState')
+            .pipe(takeUntil(this.destroy$))
+            .subscribe(this.handleStateChange.bind(this));
     }
 
     private subscribeOnAssociation(): void {
-        const sub = 
-            this.socket.fromEvent<string>('association')
-                .subscribe((association: string) => {
-                    console.log(association);
-                    this.association = association
-                });
-
-        this.subscriptions.push(sub);
+        this.socket.fromEvent<string>('association')
+            .pipe(takeUntil(this.destroy$))
+            .subscribe((association: string) => this.association = association);
     }
 
     private handleStateChange(state: States): void {
@@ -225,10 +205,8 @@ export class RoomComponent {
 
         switch(this.state) {
             case States.ChooseCardAsHeader:
-            case States.WaitForHeader: {
+            case States.WaitForHeader: 
                 this.resetVariables();
-                console.log("RESET VARIABLES");
-            }
         }
     }
 
@@ -242,30 +220,21 @@ export class RoomComponent {
     }
 
     private subscribeOnGiveCards(): void {
-        const sub = 
-            this.socket.fromEvent<string[]>('giveCards')
-                .subscribe((cards: string[]) => this.handCards = cards);
-                
-        this.subscriptions.push(sub);
+        this.socket.fromEvent<string[]>('giveCards')
+            .pipe(takeUntil(this.destroy$))
+            .subscribe((cards: string[]) => this.handCards = cards);
     }
 
     private subscribeOnGiveOneCard(): void {
-        const sub = 
-            this.socket.fromEvent<string>('giveOneCard')
-                .subscribe((card: string) => this.handCards.push(card));
-                
-        this.subscriptions.push(sub);
+        this.socket.fromEvent<string>('giveOneCard')
+            .pipe(takeUntil(this.destroy$))
+            .subscribe((card: string) => this.handCards.push(card));
     }
 
-    private subscribeOnGiveMyCardOnTheDesk(): void {
-        const sub = 
-            this.socket.fromEvent<string>('myCardOnTheDesk')
-                .subscribe((card: string) => {
-                    this.myCardOnTheDeck = card;
-                    console.log('myCardOnTheDeck', this.myCardOnTheDeck)
-                });
-                
-        this.subscriptions.push(sub);
+    private subscribeOnGiveMyCardOnTheDesk(): void { 
+        this.socket.fromEvent<string>('myCardOnTheDesk')
+            .pipe(takeUntil(this.destroy$))
+            .subscribe((card: string) =>  this.myCardOnTheDeck = card);
     }
 
     public chooseCard(card: string): void {
@@ -290,7 +259,8 @@ export class RoomComponent {
             case States.ShowCardsAndVoting:
             case States.Results:
                 return true;
-            default: return false;
+            default: 
+                return false;
         }
     }
 
@@ -312,7 +282,7 @@ export class RoomComponent {
         this.router.navigate(['/']);
     }
 
-    // * Change username functions * //
+    // * Dialog Change username functions * //
 
     private showControlPanelIfUserAdmin(): void {
         const isAdmin = !!localStorage.getItem('isAdmin');
@@ -334,9 +304,10 @@ export class RoomComponent {
         );
     }
 
-    // * END Change username functions * //
+    // * END Dialog Change username functions * //
 
     public ngOnDestroy(): void {
-        this.subscriptions.forEach(sub => sub.unsubscribe());
+        this.destroy$.next();
+        this.destroy$.complete();
     }
 }
