@@ -34,12 +34,7 @@ export class GreetingComponent {
     }
 
     public ngOnInit(): void {
-        // this.initSocketForConnectionWithData();
         this.animObjects();
-    }
-
-    private initSocketForConnectionWithData(): void {
-
     }
 
     public ngAfterViewInit(): void {
@@ -116,7 +111,6 @@ export class GreetingComponent {
     }
 
     private animObjects(): void {
-
         const windowWidth = window.innerWidth;
         const windowHeight = window.innerHeight;
 
@@ -128,27 +122,20 @@ export class GreetingComponent {
         const moveX = normalizedX * rangeX;
         const moveY = normalizedY * rangeY;
 
-        // Apply transformations to the objects
         this.medium.nativeElement.style.transform = `translate(${moveX}px, ${moveY}px)`;
         this.bateau.nativeElement.style.transform = `translate(${moveX}px, ${moveY}px)`;
 
         this.vase.nativeElement.style.transform = `translate(${-moveX}px, ${-moveY}px)`;
         this.persstella.nativeElement.style.transform = `translate(${-moveX}px, ${-moveY}px)`;
-        // object2.style.transform = `translateX(${-moveX / 2}px)`;
+
         requestAnimationFrame(this.animObjects.bind(this));
     }
 
     public generateIdForUser(): string {
-        // * for production
-        // const userId = localStorage.getItem('userId');
-        // if (userId) return userId;
-
         const timestamp = Date.now().toString();
         const randomNum = Math.floor(Math.random() * 9000) + 1000;
         const id = timestamp + randomNum;
 
-        // * for production
-        // localStorage.setItem('userId', id); 
         return id;
     }
 

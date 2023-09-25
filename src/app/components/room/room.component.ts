@@ -6,6 +6,7 @@ import { Subject, takeUntil } from 'rxjs';
 import { ChangeUsernameComponent } from 'src/app/shared/dialogs/change-username/change-username.component';
 import { IResults } from 'src/app/shared/interfaces/IResults';
 import { IUser } from 'src/app/shared/interfaces/IUser';
+import { ServerEvents } from 'src/app/shared/interfaces/server-events.enum';
 import { States } from 'src/app/shared/interfaces/states.enum';
 import { DeskService } from 'src/app/shared/services/desk.service';
 import { UserService } from 'src/app/shared/services/user.service';
@@ -55,7 +56,7 @@ export class RoomComponent {
     public ngOnInit(): void {
         this.subscribeOnCountOfUsers();
         this.subscribeOnChangeState();
-        this.subscribeOnGiveCards();
+        this.subscribeOnGiveCardsForHand();
         this.subscibeOnRoomCodeChange();
         this.subscribeOnAssociation();
         this.subscibeOnCardsForTheDesk();
@@ -71,7 +72,7 @@ export class RoomComponent {
     }
 
     private subscribeOnPingConnection(): void { 
-        this.socket.fromEvent<string>('connectedToServer')
+        this.socket.fromEvent<string>(ServerEvents.ConnectedToServer)
             .pipe(takeUntil(this.destroy$))
             .subscribe((userId: string) => {
                 if (this.roomCode) {
@@ -102,7 +103,7 @@ export class RoomComponent {
     }
 
     private subscribeOnChangeScore(): void {
-        this.socket.fromEvent<Map<string, number>>('changeScore')
+        this.socket.fromEvent<Map<string, number>>(ServerEvents.ChangeScore)
             .pipe(takeUntil(this.destroy$))
             .subscribe((usersScore: Map<string, number>) => {
                 for (const userScore of usersScore) {
@@ -112,7 +113,7 @@ export class RoomComponent {
     }
 
     private subscribeOnUsers(): void {
-        this.socket.fromEvent<IUser[]>('users')
+        this.socket.fromEvent<IUser[]>(ServerEvents.Users)
             .pipe(takeUntil(this.destroy$))
             .subscribe((users: IUser[]) => {
                 this.users = users;
@@ -120,9 +121,8 @@ export class RoomComponent {
             });
     }
 
-    
     private subscribeOnVotingResults(): void {
-        this.socket.fromEvent<IResults>('votingResults')
+        this.socket.fromEvent<IResults>(ServerEvents.VotingResults)
             .pipe(takeUntil(this.destroy$))
             .subscribe((results: IResults) => {
                 this.results = results;
@@ -130,7 +130,7 @@ export class RoomComponent {
     }
     
     private subscibeOnCardsForTheDesk(): void {
-        this.socket.fromEvent<string>('cardForTheDesk')
+        this.socket.fromEvent<string>(ServerEvents.CardForTheDesk)
             .pipe(takeUntil(this.destroy$))
             .subscribe((card: string) => {
                 if (this.handCards.indexOf(card) !== -1) {
@@ -170,7 +170,7 @@ export class RoomComponent {
         this.isJoinedToRoom = true;
         
         this.socket.emit(
-            'joinRoom', 
+            ServerEvents.JoinRoom, 
             this.roomCode,
             (user: IUser) => {
                 if (!user) {
@@ -183,19 +183,19 @@ export class RoomComponent {
     }
 
     private subscribeOnCountOfUsers(): void {
-        this.socket.fromEvent<number>('joinRoom')
+        this.socket.fromEvent<number>(ServerEvents.CountOfUsers)
             .pipe(takeUntil(this.destroy$))
             .subscribe((count: number) => this.countOfUsers = count);
     }
 
     private subscribeOnChangeState(): void { 
-        this.socket.fromEvent<States>('changeState')
+        this.socket.fromEvent<States>(ServerEvents.ChangeState)
             .pipe(takeUntil(this.destroy$))
             .subscribe(this.handleStateChange.bind(this));
     }
 
     private subscribeOnAssociation(): void {
-        this.socket.fromEvent<string>('association')
+        this.socket.fromEvent<string>(ServerEvents.Association)
             .pipe(takeUntil(this.destroy$))
             .subscribe((association: string) => this.association = association);
     }
@@ -210,29 +210,20 @@ export class RoomComponent {
         }
     }
 
-    private resetVariables(): void {
-        this.association = '';
-        this.myCardOnTheDeck = '';
-        this.cardsOnTheDesk = [];
-        this.cardsForBack = [];
-        this.results = [];
-        this.deskService.emitNewRound();
-    }
-
-    private subscribeOnGiveCards(): void {
-        this.socket.fromEvent<string[]>('giveCards')
+    private subscribeOnGiveCardsForHand(): void {
+        this.socket.fromEvent<string[]>(ServerEvents.HandCards)
             .pipe(takeUntil(this.destroy$))
             .subscribe((cards: string[]) => this.handCards = cards);
     }
 
     private subscribeOnGiveOneCard(): void {
-        this.socket.fromEvent<string>('giveOneCard')
+        this.socket.fromEvent<string>(ServerEvents.OneCard)
             .pipe(takeUntil(this.destroy$))
             .subscribe((card: string) => this.handCards.push(card));
     }
 
     private subscribeOnGiveMyCardOnTheDesk(): void { 
-        this.socket.fromEvent<string>('myCardOnTheDesk')
+        this.socket.fromEvent<string>(ServerEvents.MyCardOnTheDesk)
             .pipe(takeUntil(this.destroy$))
             .subscribe((card: string) =>  this.myCardOnTheDeck = card);
     }
@@ -242,15 +233,33 @@ export class RoomComponent {
 
         switch(this.state) {
             case States.ChooseCardAsHeader: {
-                this.socket.emit('chooseCardAsAHeader', this.roomCode, card, this.association);
+                this.socket.emit(
+                    ServerEvents.ChooseCardAsAHeader, 
+                    this.roomCode, 
+                    card, 
+                    this.association
+                );
                 break;
             };
             case States.ChooseCard: {
-                this.socket.emit('chooseCardAsAUser', this.roomCode, card);
+                this.socket.emit(
+                    ServerEvents.ChooseCardAsAUser, 
+                    this.roomCode, 
+                    card
+                );
                 this.myCardOnTheDeck = card;
                 break;
             };
         }
+    }
+
+    private resetVariables(): void {
+        this.association = '';
+        this.myCardOnTheDeck = '';
+        this.cardsOnTheDesk = [];
+        this.cardsForBack = [];
+        this.results = [];
+        this.deskService.emitNewRound();
     }
 
     public get isPutDownHand(): boolean {
@@ -269,16 +278,16 @@ export class RoomComponent {
             States.ShowCardsAndVoting === this.state && 
             card !== this.myCardOnTheDeck
         ) {
-            this.socket.emit('voteForTheCard', this.roomCode, card);
+            this.socket.emit(ServerEvents.VoteForTheCard, this.roomCode, card);
         }
     }
 
     public moveToNextRound(): void {
-        this.socket.emit('moveToNextRound', this.roomCode);
+        this.socket.emit(ServerEvents.MoveToNextRound, this.roomCode);
     }
 
     public leaveRoom(): void {
-        this.socket.emit('leaveRoom', this.roomCode);
+        this.socket.emit(ServerEvents.LeaveRoom, this.roomCode);
         this.router.navigate(['/']);
     }
 
