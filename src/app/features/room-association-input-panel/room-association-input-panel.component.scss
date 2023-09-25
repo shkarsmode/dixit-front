@@ -1,0 +1,112 @@
+:host {
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+
+	* {
+		font-family: 'Montserrat', sans-serif !important;
+		color: white;
+	}
+
+	::ng-deep.mdc-text-field {
+		width: 400px;
+		// height: 60px;
+		background: #ffffff14;
+
+		input {
+			font-size: 26px;
+			font-weight: bold;
+			caret-color: white;
+
+			animation: anim-input-color 7s linear infinite;
+		}
+
+		&:not(.mdc-text-field--disabled) .mdc-line-ripple::before {
+			border-bottom-color: rgba(255, 255, 255, 0.397)
+		}
+
+		&.mdc-text-field--filled .mdc-line-ripple::after {
+			border-bottom-color:  rgba(255, 255, 255, 0.616);
+		}
+
+		mat-label {
+			font-size: 22px;
+			font-weight: 500;
+		}
+
+		.mat-mdc-form-field-infix {
+			padding-top: 15px;
+			padding-bottom: 0;
+		}
+
+		.mat-mdc-floating-label {
+			top: 31px;
+		}
+	}
+}
+
+h3 {
+	font-size: 35px;
+	font-weight: bold;
+	text-align: center;
+
+	filter: drop-shadow(0px 0px 6px rgba(0, 0, 0, 0.355));
+	margin-bottom: 50px;
+}
+
+@keyframes anim-input-color {
+	0% {
+		color: #00deff;
+	}
+
+	30% {
+		color: #00ff7f;
+	}
+
+	60% {
+		color: #fffc00
+	}
+
+	70% {
+		color: #00ff7f;
+	}
+
+	100% {
+		color: #00deff;
+	}
+}
+
+
+@media (max-width: 1020px) {
+	h3 {
+		max-width: 610px;
+		line-height: 35px;
+	}
+}
+
+
+@media (max-width: 700px) {
+	:host {
+		padding: 0 10px;
+
+		mat-form-field {
+			width: 100%;
+		}
+		
+		::ng-deep.mdc-text-field {
+			width: 100%
+		}
+
+		h3 {
+			font-size: 28px;
+		}
+	}
+}
+
+@media (max-width: 450px) {
+	.wrap-info-center {
+		h2 {
+			font-size: 40px;
+		}
+	}
+}

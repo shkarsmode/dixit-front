@@ -1,0 +1,10 @@
+<h3>You have to write the association and choose the card</h3>
+<mat-form-field>
+	<mat-label>Your association</mat-label>
+	<input
+		[(ngModel)]="association"
+		(ngModelChange)="onAssociationChange()"
+		activeCursor
+		matInput 
+		type="text">
+</mat-form-field>
