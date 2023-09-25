@@ -1,4 +1,4 @@
-import { Component, EventEmitter, HostBinding, HostListener, Input, Output } from '@angular/core';
+import { Component, EventEmitter, HostBinding, HostListener, Input, OnInit, Output } from '@angular/core';
 import { States } from 'src/app/shared/interfaces/states.enum';
 import { DeviceUtilityService } from 'src/app/shared/utils/device-utility.service';
 
@@ -7,7 +7,7 @@ import { DeviceUtilityService } from 'src/app/shared/utils/device-utility.servic
     templateUrl: './hand.component.html',
     styleUrls: ['./hand.component.scss']
 })
-export class HandComponent {
+export class HandComponent implements OnInit {
 
     @Input() public cardsOnTheTable: string[] = [];
     @Input() public hand: string[];

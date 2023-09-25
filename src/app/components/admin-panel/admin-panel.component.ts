@@ -1,14 +1,15 @@
-import { Component } from '@angular/core';
+import { Component, OnDestroy, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { Socket } from 'ngx-socket-io';
 import { Subscription } from 'rxjs';
+import { ServerEvents } from 'src/app/shared/interfaces/server-events.enum';
 
 @Component({
     selector: 'app-admin-panel',
     templateUrl: './admin-panel.component.html',
     styleUrls: ['./admin-panel.component.scss']
 })
-export class AdminPanelComponent {
+export class AdminPanelComponent implements OnInit, OnDestroy {
 
     public roomCode: string;
     public subscriptions: Subscription[] = [];
@@ -23,7 +24,7 @@ export class AdminPanelComponent {
     }
     
     public startGame(): void {
-        this.socket.emit('startGame', this.roomCode);
+        this.socket.emit(ServerEvents.StartGame, this.roomCode);
     }
 
     private subscibeOnRoomCodeChange(): void {

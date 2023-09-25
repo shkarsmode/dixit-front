@@ -26,19 +26,10 @@
 		[isResults]="States.Results === state">
 	</app-room-users>
 
-	<div 
-		*ngIf="States.ChooseCardAsHeader === state" 
-		class="wrap-info-center">
-		<h3>You have to write the association and choose the card</h3>
-		<mat-form-field>
-			<mat-label>Your association</mat-label>
-			<input
-				activeCursor
-				matInput 
-				type="text" 
-				[(ngModel)]="association">
-		</mat-form-field>
-	</div>
+	<app-room-association-input-panel
+		*ngIf="States.ChooseCardAsHeader === state"
+		(associationChanged)="associationChanged($event)">
+	</app-room-association-input-panel>
 
 	<app-hand
 		[state]="state"

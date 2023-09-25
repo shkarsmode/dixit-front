@@ -1,36 +1,3 @@
-<!-- <div class="wrap">
-	Current user <strong>{{ username }}</strong>
-
-	<hr>
-
-	<button
-		activeCursor 
-		(click)="createRoom()" 
-		mat-raised-button>
-		Create room
-	</button>
-
-	<form>
-		<mat-form-field>
-			<mat-label>Room code</mat-label>
-			<input
-				activeCursor
-				matInput 
-				type="text" 
-				name="roomcode" 
-				[(ngModel)]="roomCode">
-		</mat-form-field>
-		<button
-			activeCursor 
-			(click)="joinRoom()" 
-			type="submit" 
-			mat-raised-button>
-			
-			Join Room
-		</button>
-	</form>
-</div> -->
-
 <div 
 	id="choix_univers_pc" 
 	class="desktop_version"
@@ -58,11 +25,10 @@
 	<div class="tachem tachem5"></div>
 	<div class="tachem tachem6"></div>
 	<div class="tachem tachem7"></div>
-   
+
 
 	<div class="conteneur">
 		<div class="deco deco-dixit">
-			<!-- <img src="data:image/svg+xml,%3Csvg%20xmlns='http://www.w3.org/2000/svg'%20viewBox='0%200%200%200'%3E%3C/svg%3E" alt="Dixit - Soleil" id="soleil" style="width:628px" data-lazy-src="https://www.libellud.com/wp-content/themes/libellud-theme/images/dixit/soleil.png"><noscript><img src="https://www.libellud.com/wp-content/themes/libellud-theme/images/dixit/soleil.png" alt="Dixit - Soleil" id="soleil" style="width:628px"></noscript> -->
 			<img width="510" height="530" src="https://www.libellud.com/wp-content/themes/libellud-theme/images/dixit/chateau-pc.png" alt="Dixit - Chateau" id="chateau" style="width:510px" data-lazy-src="https://www.libellud.com/wp-content/themes/libellud-theme/images/dixit/chateau-pc.png" data-ll-status="loaded" class="entered lazyloaded"><noscript><img width="510" height="530" src="https://www.libellud.com/wp-content/themes/libellud-theme/images/dixit/chateau-pc.png" alt="Dixit - Chateau" id="chateau" style="width:510px"></noscript>
 			<div #bateau id="bateau"><img width="640" height="420" src="https://www.libellud.com/wp-content/themes/libellud-theme/images/dixit/bateau.png" alt="Dixit - Bateau" class="bateau entered lazyloaded" style="width: 640px; transform: matrix(1, 0, 0, 1, -1.53705, 20.1136);" data-lazy-src="https://www.libellud.com/wp-content/themes/libellud-theme/images/dixit/bateau.png" data-ll-status="loaded"><noscript><img width="640" height="420" src="https://www.libellud.com/wp-content/themes/libellud-theme/images/dixit/bateau.png" alt="Dixit - Bateau" class="bateau" style="width:640px"></noscript></div>
 			<img width="206" height="312" src="data:image/svg+xml,%3Csvg%20xmlns='http://www.w3.org/2000/svg'%20viewBox='0%200%20206%20312'%3E%3C/svg%3E" alt="Dixit - Fillette" id="fillette" style="width:206px" data-lazy-src="https://www.libellud.com/wp-content/themes/libellud-theme/images/dixit/perso_dixit.png"><noscript><img width="206" height="312" src="https://www.libellud.com/wp-content/themes/libellud-theme/images/dixit/perso_dixit.png" alt="Dixit - Fillette" id="fillette" style="width:206px"></noscript>
@@ -131,15 +97,6 @@
 						(keydown)="onInputKeydown($event, 4)" 
 						#input5>
 				</div>
-				<!-- <mat-form-field>
-					<mat-label>Room code</mat-label>
-					<input
-						activeCursor
-						matInput 
-						type="text"
-						name="roomcode" 
-						[(ngModel)]="roomCode">
-				</mat-form-field> -->
 				<button
 					class="join-button"
 					activeCursor 
@@ -151,7 +108,6 @@
 			</form>
 		</div>
 	</div>
-	<div class="retour"><a href="javascript:;" class="bouton"><span>return</span></a></div>
 </div>
 
 <section>

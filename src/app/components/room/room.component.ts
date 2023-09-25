@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, OnDestroy, OnInit } from '@angular/core';
 import { MatDialog, MatDialogConfig } from '@angular/material/dialog';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Socket } from 'ngx-socket-io';
@@ -16,7 +16,7 @@ import { UserService } from 'src/app/shared/services/user.service';
     templateUrl: './room.component.html',
     styleUrls: ['./room.component.scss']
 })
-export class RoomComponent {
+export class RoomComponent implements OnInit, OnDestroy {
     
     public isAdmin: boolean = false;
 
@@ -260,6 +260,10 @@ export class RoomComponent {
         this.cardsForBack = [];
         this.results = [];
         this.deskService.emitNewRound();
+    }
+
+    public associationChanged(association: string): void {
+        this.association = association;
     }
 
     public get isPutDownHand(): boolean {

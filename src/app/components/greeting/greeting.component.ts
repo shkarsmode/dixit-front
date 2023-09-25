@@ -1,4 +1,4 @@
-import { Component, ElementRef, HostListener, QueryList, ViewChild, ViewChildren } from '@angular/core';
+import { AfterViewInit, Component, ElementRef, HostListener, OnInit, QueryList, ViewChild, ViewChildren } from '@angular/core';
 import { Router } from '@angular/router';
 import { Socket } from 'ngx-socket-io';
 import { UserService } from 'src/app/shared/services/user.service';
@@ -8,10 +8,9 @@ import { UserService } from 'src/app/shared/services/user.service';
     templateUrl: './greeting.component.html',
     styleUrls: ['./greeting.component.scss']
 })
-export class GreetingComponent {
+export class GreetingComponent implements OnInit, AfterViewInit {
     
     public stateOfMovingSides: string = 'none';
-    public username: string = 'shkarsmode';
     public roomCode: string = '';
     
     public clientX: number;
@@ -52,7 +51,6 @@ export class GreetingComponent {
         this.clientY = event.clientY;
 
         const windowWidth = window.innerWidth;
-        // const windowHeight = window.innerHeight;
 
         if (this.clientX <= windowWidth / 3) {
             this.stateOfMovingSides = 'left';

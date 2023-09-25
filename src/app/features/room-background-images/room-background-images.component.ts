@@ -5,6 +5,4 @@ import { Component } from '@angular/core';
   templateUrl: './room-background-images.component.html',
   styleUrls: ['./room-background-images.component.scss']
 })
-export class RoomBackgroundImagesComponent {
-
-}
+export class RoomBackgroundImagesComponent {}

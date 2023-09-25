@@ -1,4 +1,4 @@
-import { Component, ElementRef, EventEmitter, Input, OnDestroy, OnInit, Output, ViewChild } from '@angular/core';
+import { Component, ElementRef, EventEmitter, Input, OnChanges, OnDestroy, OnInit, Output, ViewChild } from '@angular/core';
 import { Subscription, interval, takeWhile } from 'rxjs';
 import { IResults } from 'src/app/shared/interfaces/IResults';
 import { IUser } from 'src/app/shared/interfaces/IUser';
@@ -12,7 +12,7 @@ import { DeviceUtilityService } from '../../shared/utils/device-utility.service'
     templateUrl: './desk.component.html',
     styleUrls: ['./desk.component.scss']
 })
-export class DeskComponent implements OnInit, OnDestroy {
+export class DeskComponent implements OnChanges, OnInit, OnDestroy {
 
     @Input() public cards: string[] = [];
     @Input() public cardsForBack: string[] = [];

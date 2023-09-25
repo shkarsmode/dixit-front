@@ -21,6 +21,7 @@ import { ActiveCursorDirective } from './shared/directives/active-cursor.directi
 import { HeaderInterceptor } from './shared/helpers/header.interceptor';
 import { MaterialModule } from './shared/modules/materials/material.module';
 import { SocketModule } from './shared/modules/socket-io/socket-io.module';
+import { RoomAssociationInputPanelComponent } from './features/room-association-input-panel/room-association-input-panel.component';
 
 @NgModule({
     declarations: [
@@ -36,7 +37,8 @@ import { SocketModule } from './shared/modules/socket-io/socket-io.module';
         DeskComponent,
         ChangeUsernameComponent,
         RoomWaitingFlowComponent,
-        RoomBackgroundImagesComponent
+        RoomBackgroundImagesComponent,
+        RoomAssociationInputPanelComponent
     ],
     imports: [
         BrowserModule,
