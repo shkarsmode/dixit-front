@@ -1,13 +1,12 @@
 import { Component, Input, OnInit } from '@angular/core';
-import { IUser } from 'src/app/shared/interfaces/IUser';
+import { IUser } from '@shared/interfaces';
 
 @Component({
     selector: 'app-room-users',
     templateUrl: './room-users.component.html',
-    styleUrls: ['./room-users.component.scss']
+    styleUrls: ['./room-users.component.scss'],
 })
 export class RoomUsersComponent implements OnInit {
-    
     @Input() public users: IUser[];
     @Input() public isResults: boolean = false;
 
@@ -23,7 +22,7 @@ export class RoomUsersComponent implements OnInit {
     }
 
     public get indexOfUserHeader(): number {
-        return this.users.findIndex(user => user.isHeader);
+        return this.users.findIndex((user) => user.isHeader);
     }
 
     public toggleLeaderboard(): void {

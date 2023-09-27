@@ -1,19 +1,25 @@
-import { Component, ElementRef, EventEmitter, Input, OnChanges, OnDestroy, OnInit, Output, ViewChild } from '@angular/core';
+import {
+    Component,
+    ElementRef,
+    EventEmitter,
+    Input,
+    OnChanges,
+    OnDestroy,
+    OnInit,
+    Output,
+    ViewChild,
+} from '@angular/core';
+import { IResults, IUser, States } from '@shared/interfaces';
+import { DeskService, UserService } from '@shared/services';
+import { DeviceUtilityService } from '@shared/utils';
 import { Subscription, interval, takeWhile } from 'rxjs';
-import { IResults } from 'src/app/shared/interfaces/IResults';
-import { IUser } from 'src/app/shared/interfaces/IUser';
-import { States } from 'src/app/shared/interfaces/states.enum';
-import { DeskService } from 'src/app/shared/services/desk.service';
-import { UserService } from 'src/app/shared/services/user.service';
-import { DeviceUtilityService } from '../../shared/utils/device-utility.service';
 
 @Component({
     selector: 'app-desk',
     templateUrl: './desk.component.html',
-    styleUrls: ['./desk.component.scss']
+    styleUrls: ['./desk.component.scss'],
 })
 export class DeskComponent implements OnChanges, OnInit, OnDestroy {
-
     @Input() public cards: string[] = [];
     @Input() public cardsForBack: string[] = [];
     @Input() public results: IResults = [];
@@ -39,7 +45,6 @@ export class DeskComponent implements OnChanges, OnInit, OnDestroy {
     @Output() public voteCard: EventEmitter<string> = new EventEmitter();
     @Output() public nextRound: EventEmitter<void> = new EventEmitter();
 
-    
     public readonly pathToDixitCards: string = 'assets/img/dixit/';
     public readonly format: string = '.png';
     public chosenCard: string = '';
@@ -47,15 +52,14 @@ export class DeskComponent implements OnChanges, OnInit, OnDestroy {
     public isMobileDevice: boolean;
     public previewCard: string = '';
 
-    private cardsInitialValues: 
-        Array<{ 
-            top: number,
-            left: number,
-            width: number, 
-            height: number,
-            zIndex: string,
-            cardElement: HTMLDivElement
-        }> = [];
+    private cardsInitialValues: Array<{
+        top: number;
+        left: number;
+        width: number;
+        height: number;
+        zIndex: string;
+        cardElement: HTMLDivElement;
+    }> = [];
     private subscriptions: Subscription[] = [];
 
     constructor(
@@ -71,15 +75,13 @@ export class DeskComponent implements OnChanges, OnInit, OnDestroy {
 
     public async ngOnChanges(): Promise<void> {
         if (
-            (
-                States.ShowCardsForHeader === this.state || 
-                States.ShowCardsAndVoting === this.state || 
-                States.Results === this.state
-            ) &&
+            (States.ShowCardsForHeader === this.state ||
+                States.ShowCardsAndVoting === this.state ||
+                States.Results === this.state) &&
             !this.isRotateCards &&
             !this.isEmittedNextRound
         ) {
-            await new Promise(resolve => setTimeout(resolve, 1000));
+            await new Promise((resolve) => setTimeout(resolve, 1000));
             this.isRotateCards = true;
             this.initDefaultPositionAndSizeOfCard();
         }
@@ -99,7 +101,7 @@ export class DeskComponent implements OnChanges, OnInit, OnDestroy {
                     this.initDefaultPositionAndSizeOfCard();
                     return;
                 }
-        });
+            });
     }
 
     private async initDefaultPositionAndSizeOfCard(): Promise<void> {
@@ -107,19 +109,26 @@ export class DeskComponent implements OnChanges, OnInit, OnDestroy {
             this.retryInitionOfDefaultPositionAndSizeOfCard();
             return;
         }
-        
-        await new Promise(resolve => setTimeout(resolve, 1000));
+
+        await new Promise((resolve) => setTimeout(resolve, 1000));
         this.cardsInitialValues = [];
-        
-        const arrayOfDomCards = 
-            Array.from(this.wrapCards.nativeElement.children) as Array<HTMLDivElement>;
+
+        const arrayOfDomCards = Array.from(
+            this.wrapCards.nativeElement.children
+        ) as Array<HTMLDivElement>;
 
         arrayOfDomCards.forEach((card: HTMLDivElement) => {
             const { top, left, width, height } = card.getBoundingClientRect();
             const zIndex = card.style.zIndex;
-            this.cardsInitialValues.push({ top, left, width, height, zIndex, cardElement: card });
+            this.cardsInitialValues.push({
+                top,
+                left,
+                width,
+                height,
+                zIndex,
+                cardElement: card,
+            });
         });
-
     }
 
     public moveToNextRound(): void {
@@ -130,9 +139,9 @@ export class DeskComponent implements OnChanges, OnInit, OnDestroy {
     }
 
     private subscribeOnNewRound(): void {
-        const sub = 
-            this.deskService.newRound$
-                .subscribe(this.clearVariablesForNewRound.bind(this));
+        const sub = this.deskService.newRound$.subscribe(
+            this.clearVariablesForNewRound.bind(this)
+        );
 
         this.subscriptions.push(sub);
     }
@@ -152,9 +161,10 @@ export class DeskComponent implements OnChanges, OnInit, OnDestroy {
         }
 
         if (
-            this.cardsInitialValues.length !== this.cards.length || 
+            this.cardsInitialValues.length !== this.cards.length ||
             this.myCardOnTheDeck === card
-        ) return;
+        )
+            return;
 
         if (this.previewCard) {
             this.backToInitialPosition(this.previewCard);
@@ -163,15 +173,22 @@ export class DeskComponent implements OnChanges, OnInit, OnDestroy {
         }
 
         this.previewCard = card;
-        const cardIndex = this.cards.findIndex(cardFromArray => card === cardFromArray);
+        const cardIndex = this.cards.findIndex(
+            (cardFromArray) => card === cardFromArray
+        );
         const cardToPreview = this.cardsInitialValues[cardIndex];
 
         const windowHeight = window.innerHeight;
         const windowWidth = window.innerWidth;
 
-        const diffHeight = windowHeight / 2 - cardToPreview.top - cardToPreview.height / 2 - 20;
-        const diffWidth = windowWidth / 2 - cardToPreview.left - cardToPreview.width / 2;
-        
+        const diffHeight =
+            windowHeight / 2 -
+            cardToPreview.top -
+            cardToPreview.height / 2 -
+            20;
+        const diffWidth =
+            windowWidth / 2 - cardToPreview.left - cardToPreview.width / 2;
+
         cardToPreview.cardElement.style.top = diffHeight + 'px';
         cardToPreview.cardElement.style.left = diffWidth + 'px';
         cardToPreview.cardElement.style.transform = 'scale(2)';
@@ -182,14 +199,16 @@ export class DeskComponent implements OnChanges, OnInit, OnDestroy {
         if (!this.isMobileDevice) return;
 
         this.previewCard = '';
-        const cardIndex = this.cards.findIndex(cardFromArray => card === cardFromArray);
+        const cardIndex = this.cards.findIndex(
+            (cardFromArray) => card === cardFromArray
+        );
         const cardToPreview = this.cardsInitialValues[cardIndex];
 
         cardToPreview.cardElement.style.top = '0px';
         cardToPreview.cardElement.style.left = '0px';
         cardToPreview.cardElement.style.transform = 'scale(1)';
-        
-        await new Promise(resolve => setTimeout(resolve, 300));
+
+        await new Promise((resolve) => setTimeout(resolve, 300));
         cardToPreview.cardElement.style.zIndex = cardToPreview.zIndex;
     }
 
@@ -204,25 +223,28 @@ export class DeskComponent implements OnChanges, OnInit, OnDestroy {
         const userVote = {
             card,
             votes: [color],
-            isHeaderCard: false
+            isHeaderCard: false,
         };
         this.results = [userVote];
     }
 
     public isHeaderCard = (card: string): boolean => {
         if (!this.hasMatcheResultsAndUsersLength) return false;
-        const cardToCheckOnHeader = this.results.find(result => result.card === card);
+        const cardToCheckOnHeader = this.results.find(
+            (result) => result.card === card
+        );
         return cardToCheckOnHeader ? cardToCheckOnHeader.isHeaderCard : false;
-    }
+    };
 
     public onMouseDown(cardElement: HTMLDivElement, card: string): void {
         if (
-            States.ShowCardsForHeader === this.state || 
-            this.hasMatcheResultsAndUsersLength || 
+            States.ShowCardsForHeader === this.state ||
+            this.hasMatcheResultsAndUsersLength ||
             States.Results === this.state ||
             card === this.myCardOnTheDeck
-        ) return;
-        
+        )
+            return;
+
         this.chosenCard = card;
         cardElement.style.transform = 'scale(0.9)';
     }
@@ -230,10 +252,11 @@ export class DeskComponent implements OnChanges, OnInit, OnDestroy {
     public onMouseLeave(cardElement: HTMLDivElement): void {
         if (
             States.ShowCardsForHeader === this.state ||
-            States.Results === this.state || 
+            States.Results === this.state ||
             this.isMobileDevice ||
             this.hasMatcheResultsAndUsersLength
-        ) return;
+        )
+            return;
 
         this.chosenCard = '';
         cardElement.style.transform = 'scale(1)';
@@ -241,11 +264,12 @@ export class DeskComponent implements OnChanges, OnInit, OnDestroy {
 
     public onMouseUp(cardElement: HTMLDivElement, card: string): void {
         if (
-            States.ShowCardsForHeader === this.state || 
+            States.ShowCardsForHeader === this.state ||
             States.Results === this.state ||
-            this.hasMatcheResultsAndUsersLength || 
+            this.hasMatcheResultsAndUsersLength ||
             this.chosenCard !== card
-        ) return;
+        )
+            return;
 
         this.chosenCard = '';
         cardElement.style.transform = 'scale(1)';
@@ -265,12 +289,12 @@ export class DeskComponent implements OnChanges, OnInit, OnDestroy {
         return 'small';
     }
 
-    private get hasMatcheResultsAndUsersLength (): boolean {
+    private get hasMatcheResultsAndUsersLength(): boolean {
         if (!this.results || !this.users) return false;
         return this.results.length === this.users.length;
     }
 
     public ngOnDestroy(): void {
-        this.subscriptions.forEach(sub => sub.unsubscribe());
+        this.subscriptions.forEach((sub) => sub.unsubscribe());
     }
 }

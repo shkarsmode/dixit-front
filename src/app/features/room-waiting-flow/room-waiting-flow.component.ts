@@ -6,11 +6,9 @@ import { Component, EventEmitter, Input, Output } from '@angular/core';
     styleUrls: ['./room-waiting-flow.component.scss'],
 })
 export class RoomWaitingFlowComponent {
-
     @Input() roomCode: string;
     @Input() countOfUsers: number;
     @Output() leaveRoom: EventEmitter<void> = new EventEmitter();
 
     public leave = () => this.leaveRoom.emit();
-    
 }

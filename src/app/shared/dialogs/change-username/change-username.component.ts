@@ -1,13 +1,21 @@
+import { CommonModule } from '@angular/common';
 import { Component, Inject, OnDestroy, OnInit } from '@angular/core';
-import { FormControl, Validators } from '@angular/forms';
+import { FormControl, ReactiveFormsModule, Validators } from '@angular/forms';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
+import { MaterialModule } from '@shared/modules';
+import { UserService } from '@shared/services';
 import { Subscription, interval, takeWhile } from 'rxjs';
-import { UserService } from '../../services/user.service';
 
 @Component({
     selector: 'app-change-username',
     templateUrl: './change-username.component.html',
-    styleUrls: ['./change-username.component.scss']
+    styleUrls: ['./change-username.component.scss'],
+    imports: [
+        CommonModule,
+        ReactiveFormsModule,
+        MaterialModule
+    ],
+    standalone: true
 })
 export class ChangeUsernameComponent implements OnInit, OnDestroy {
 

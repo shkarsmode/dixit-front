@@ -1,18 +1,26 @@
-import { AfterViewInit, Component, ElementRef, HostListener, OnInit, QueryList, ViewChild, ViewChildren } from '@angular/core';
+import {
+    AfterViewInit,
+    Component,
+    ElementRef,
+    HostListener,
+    OnInit,
+    QueryList,
+    ViewChild,
+    ViewChildren,
+} from '@angular/core';
 import { Router } from '@angular/router';
+import { UserService } from '@shared/services';
 import { Socket } from 'ngx-socket-io';
-import { UserService } from 'src/app/shared/services/user.service';
 
 @Component({
     selector: 'app-greeting',
     templateUrl: './greeting.component.html',
-    styleUrls: ['./greeting.component.scss']
+    styleUrls: ['./greeting.component.scss'],
 })
 export class GreetingComponent implements OnInit, AfterViewInit {
-    
     public stateOfMovingSides: string = 'none';
     public roomCode: string = '';
-    
+
     public clientX: number;
     public clientY: number;
 
@@ -23,12 +31,10 @@ export class GreetingComponent implements OnInit, AfterViewInit {
     @ViewChild('bateau', { static: true }) bateau: ElementRef;
     @ViewChild('persstella', { static: true }) persstella: ElementRef;
     @ViewChild('vase', { static: true }) vase: ElementRef;
-    @ViewChildren('input1, input2, input3, input4, input5') inputList: QueryList<ElementRef>;
+    @ViewChildren('input1, input2, input3, input4, input5')
+    inputList: QueryList<ElementRef>;
 
-    constructor(
-        private userService: UserService,
-        private router: Router
-    ) {
+    constructor(private userService: UserService, private router: Router) {
         this.socket = userService.socket;
     }
 
@@ -41,20 +47,24 @@ export class GreetingComponent implements OnInit, AfterViewInit {
     }
 
     /**
-    * Converts a QueryList of elements to an array and assigns it to a class variable.
-    */
-    public convertParagrapsQueryListToArray = () => this.inputsList = this.inputList.toArray();
+     * Converts a QueryList of elements to an array and assigns it to a class variable.
+     */
+    public convertParagrapsQueryListToArray = () =>
+        (this.inputsList = this.inputList.toArray());
 
-    @HostListener('mousemove', ['$event']) 
+    @HostListener('mousemove', ['$event'])
     public onMouseMove(event: MouseEvent): void {
-        this.clientX = event.clientX
+        this.clientX = event.clientX;
         this.clientY = event.clientY;
 
         const windowWidth = window.innerWidth;
 
         if (this.clientX <= windowWidth / 3) {
             this.stateOfMovingSides = 'left';
-        } else if (this.clientX > windowWidth / 3 && this.clientX <= windowWidth/3*2) {
+        } else if (
+            this.clientX > windowWidth / 3 &&
+            this.clientX <= (windowWidth / 3) * 2
+        ) {
             this.stateOfMovingSides = 'none';
         } else {
             this.stateOfMovingSides = 'right';
@@ -75,11 +85,12 @@ export class GreetingComponent implements OnInit, AfterViewInit {
         }
 
         if (
-            event.key === 'ArrowRight' || 
-            event.key === 'ArrowLeft' || 
-            event.key === 'ArrowUp' || 
+            event.key === 'ArrowRight' ||
+            event.key === 'ArrowLeft' ||
+            event.key === 'ArrowUp' ||
             event.key === 'ArrowDown'
-        ) return;
+        )
+            return;
 
         if (event.key === 'Backspace' && input.nativeElement.value === '') {
             if (index > 0) {
@@ -90,19 +101,18 @@ export class GreetingComponent implements OnInit, AfterViewInit {
             const isLetter = /^[a-zA-Z]$/.test(event.key);
             if (isLetter) {
                 if (index < this.inputsList.length - 1) {
-                    await new Promise(resolve => setTimeout(resolve, 20));
+                    await new Promise((resolve) => setTimeout(resolve, 20));
                     this.inputsList[index + 1].nativeElement.focus();
                 }
-
             } else {
-                await new Promise(resolve => setTimeout(resolve, 10));
+                await new Promise((resolve) => setTimeout(resolve, 10));
                 this.inputsList[index].nativeElement.value = '';
             }
         }
 
-        await new Promise(resolve => setTimeout(resolve, 20));
+        await new Promise((resolve) => setTimeout(resolve, 20));
         this.roomCode = '';
-        this.inputsList.forEach(input => {
+        this.inputsList.forEach((input) => {
             const value = input.nativeElement.value;
             this.roomCode += value;
         });
@@ -140,7 +150,7 @@ export class GreetingComponent implements OnInit, AfterViewInit {
     public async createRoom(): Promise<void> {
         const roomCode = this.generateUniqueRoomCode();
         await this.socket.emit('createRoom', roomCode);
-        
+
         this.router.navigate(['/rooms', roomCode]);
     }
 
@@ -150,7 +160,8 @@ export class GreetingComponent implements OnInit, AfterViewInit {
     }
 
     private generateUniqueRoomCode(): string {
-        const characters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz';
+        const characters =
+            'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz';
         let code = '';
 
         for (let i = 0; i < 5; i++) {

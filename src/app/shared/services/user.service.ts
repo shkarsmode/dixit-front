@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
+import { IUser } from '@shared/interfaces';
 import { Socket } from 'ngx-socket-io';
-import { IUser } from '../interfaces/IUser';
 
 @Injectable({
     providedIn: 'root'

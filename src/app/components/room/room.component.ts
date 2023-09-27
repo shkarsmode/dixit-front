@@ -1,23 +1,18 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { MatDialog, MatDialogConfig } from '@angular/material/dialog';
 import { ActivatedRoute, Router } from '@angular/router';
+import { ChangeUsernameComponent } from '@shared/dialogs';
+import { IResults, IUser, ServerEvents, States } from '@shared/interfaces';
+import { DeskService, UserService } from '@shared/services';
 import { Socket } from 'ngx-socket-io';
 import { Subject, takeUntil } from 'rxjs';
-import { ChangeUsernameComponent } from 'src/app/shared/dialogs/change-username/change-username.component';
-import { IResults } from 'src/app/shared/interfaces/IResults';
-import { IUser } from 'src/app/shared/interfaces/IUser';
-import { ServerEvents } from 'src/app/shared/interfaces/server-events.enum';
-import { States } from 'src/app/shared/interfaces/states.enum';
-import { DeskService } from 'src/app/shared/services/desk.service';
-import { UserService } from 'src/app/shared/services/user.service';
 
 @Component({
     selector: 'app-room',
     templateUrl: './room.component.html',
-    styleUrls: ['./room.component.scss']
+    styleUrls: ['./room.component.scss'],
 })
 export class RoomComponent implements OnInit, OnDestroy {
-    
     public isAdmin: boolean = false;
 
     public statesEnum: typeof States = States;
@@ -41,7 +36,6 @@ export class RoomComponent implements OnInit, OnDestroy {
     private socket: Socket;
     private dialogConfig: MatDialogConfig = new MatDialogConfig();
     private destroy$: Subject<void> = new Subject();
-    
 
     constructor(
         private route: ActivatedRoute,
@@ -71,8 +65,9 @@ export class RoomComponent implements OnInit, OnDestroy {
         this.checkIsUserDoesntHasName();
     }
 
-    private subscribeOnPingConnection(): void { 
-        this.socket.fromEvent<string>(ServerEvents.ConnectedToServer)
+    private subscribeOnPingConnection(): void {
+        this.socket
+            .fromEvent<string>(ServerEvents.ConnectedToServer)
             .pipe(takeUntil(this.destroy$))
             .subscribe((userId: string) => {
                 if (this.roomCode) {
@@ -84,26 +79,24 @@ export class RoomComponent implements OnInit, OnDestroy {
     private checkIsUserDoesntHasName(): void {
         const username = localStorage.getItem('username');
         if (username) {
-            if (username.length > 13)
-                this.openDialogToChangeUserName();
-            
+            if (username.length > 13) this.openDialogToChangeUserName();
+
             return;
         }
-        
+
         this.openDialogToChangeUserName();
     }
 
     private subscibeOnRoomCodeChange(): void {
-        this.route.params
-            .pipe(takeUntil(this.destroy$))
-            .subscribe(params => {
-                const roomCode = params['roomCode'];
-                this.handleChangedRoomCode(roomCode);
-            });
+        this.route.params.pipe(takeUntil(this.destroy$)).subscribe((params) => {
+            const roomCode = params['roomCode'];
+            this.handleChangedRoomCode(roomCode);
+        });
     }
 
     private subscribeOnChangeScore(): void {
-        this.socket.fromEvent<Map<string, number>>(ServerEvents.ChangeScore)
+        this.socket
+            .fromEvent<Map<string, number>>(ServerEvents.ChangeScore)
             .pipe(takeUntil(this.destroy$))
             .subscribe((usersScore: Map<string, number>) => {
                 for (const userScore of usersScore) {
@@ -113,7 +106,8 @@ export class RoomComponent implements OnInit, OnDestroy {
     }
 
     private subscribeOnUsers(): void {
-        this.socket.fromEvent<IUser[]>(ServerEvents.Users)
+        this.socket
+            .fromEvent<IUser[]>(ServerEvents.Users)
             .pipe(takeUntil(this.destroy$))
             .subscribe((users: IUser[]) => {
                 this.users = users;
@@ -122,19 +116,23 @@ export class RoomComponent implements OnInit, OnDestroy {
     }
 
     private subscribeOnVotingResults(): void {
-        this.socket.fromEvent<IResults>(ServerEvents.VotingResults)
+        this.socket
+            .fromEvent<IResults>(ServerEvents.VotingResults)
             .pipe(takeUntil(this.destroy$))
             .subscribe((results: IResults) => {
                 this.results = results;
             });
     }
-    
+
     private subscibeOnCardsForTheDesk(): void {
-        this.socket.fromEvent<string>(ServerEvents.CardForTheDesk)
+        this.socket
+            .fromEvent<string>(ServerEvents.CardForTheDesk)
             .pipe(takeUntil(this.destroy$))
             .subscribe((card: string) => {
                 if (this.handCards.indexOf(card) !== -1) {
-                    this.handCards = this.handCards.filter(handCard => handCard !== card);
+                    this.handCards = this.handCards.filter(
+                        (handCard) => handCard !== card
+                    );
                 }
                 this.cardsForBack = [...this.cardsForBack, 'card'];
                 this.cardsOnTheDesk = [...this.cardsOnTheDesk, card];
@@ -145,8 +143,10 @@ export class RoomComponent implements OnInit, OnDestroy {
     private shuffleCards() {
         for (let i = this.cardsOnTheDesk.length - 1; i > 0; i--) {
             const randomIndex = this.getRandomIndex(i + 1);
-            [this.cardsOnTheDesk[i], this.cardsOnTheDesk[randomIndex]] = 
-                [this.cardsOnTheDesk[randomIndex], this.cardsOnTheDesk[i]];
+            [this.cardsOnTheDesk[i], this.cardsOnTheDesk[randomIndex]] = [
+                this.cardsOnTheDesk[randomIndex],
+                this.cardsOnTheDesk[i],
+            ];
         }
     }
 
@@ -168,9 +168,9 @@ export class RoomComponent implements OnInit, OnDestroy {
     private joinRoom(): void {
         if (this.isJoinedToRoom) return;
         this.isJoinedToRoom = true;
-        
+
         this.socket.emit(
-            ServerEvents.JoinRoom, 
+            ServerEvents.JoinRoom,
             this.roomCode,
             (user: IUser) => {
                 if (!user) {
@@ -179,77 +179,86 @@ export class RoomComponent implements OnInit, OnDestroy {
                     return;
                 }
                 this.userService.user = user;
-            });
+            }
+        );
     }
 
     private subscribeOnCountOfUsers(): void {
-        this.socket.fromEvent<number>(ServerEvents.CountOfUsers)
+        this.socket
+            .fromEvent<number>(ServerEvents.CountOfUsers)
             .pipe(takeUntil(this.destroy$))
-            .subscribe((count: number) => this.countOfUsers = count);
+            .subscribe((count: number) => (this.countOfUsers = count));
     }
 
-    private subscribeOnChangeState(): void { 
-        this.socket.fromEvent<States>(ServerEvents.ChangeState)
+    private subscribeOnChangeState(): void {
+        this.socket
+            .fromEvent<States>(ServerEvents.ChangeState)
             .pipe(takeUntil(this.destroy$))
             .subscribe(this.handleStateChange.bind(this));
     }
 
     private subscribeOnAssociation(): void {
-        this.socket.fromEvent<string>(ServerEvents.Association)
+        this.socket
+            .fromEvent<string>(ServerEvents.Association)
             .pipe(takeUntil(this.destroy$))
-            .subscribe((association: string) => this.association = association);
+            .subscribe(
+                (association: string) => (this.association = association)
+            );
     }
 
     private handleStateChange(state: States): void {
         this.state = state;
 
-        switch(this.state) {
+        switch (this.state) {
             case States.ChooseCardAsHeader:
-            case States.WaitForHeader: 
+            case States.WaitForHeader:
                 this.resetVariables();
         }
     }
 
     private subscribeOnGiveCardsForHand(): void {
-        this.socket.fromEvent<string[]>(ServerEvents.HandCards)
+        this.socket
+            .fromEvent<string[]>(ServerEvents.HandCards)
             .pipe(takeUntil(this.destroy$))
-            .subscribe((cards: string[]) => this.handCards = cards);
+            .subscribe((cards: string[]) => (this.handCards = cards));
     }
 
     private subscribeOnGiveOneCard(): void {
-        this.socket.fromEvent<string>(ServerEvents.OneCard)
+        this.socket
+            .fromEvent<string>(ServerEvents.OneCard)
             .pipe(takeUntil(this.destroy$))
             .subscribe((card: string) => this.handCards.push(card));
     }
 
-    private subscribeOnGiveMyCardOnTheDesk(): void { 
-        this.socket.fromEvent<string>(ServerEvents.MyCardOnTheDesk)
+    private subscribeOnGiveMyCardOnTheDesk(): void {
+        this.socket
+            .fromEvent<string>(ServerEvents.MyCardOnTheDesk)
             .pipe(takeUntil(this.destroy$))
-            .subscribe((card: string) =>  this.myCardOnTheDeck = card);
+            .subscribe((card: string) => (this.myCardOnTheDeck = card));
     }
 
     public chooseCard(card: string): void {
         if (!this.association) return;
 
-        switch(this.state) {
+        switch (this.state) {
             case States.ChooseCardAsHeader: {
                 this.socket.emit(
-                    ServerEvents.ChooseCardAsAHeader, 
-                    this.roomCode, 
-                    card, 
+                    ServerEvents.ChooseCardAsAHeader,
+                    this.roomCode,
+                    card,
                     this.association
                 );
                 break;
-            };
+            }
             case States.ChooseCard: {
                 this.socket.emit(
-                    ServerEvents.ChooseCardAsAUser, 
-                    this.roomCode, 
+                    ServerEvents.ChooseCardAsAUser,
+                    this.roomCode,
                     card
                 );
                 this.myCardOnTheDeck = card;
                 break;
-            };
+            }
         }
     }
 
@@ -267,19 +276,19 @@ export class RoomComponent implements OnInit, OnDestroy {
     }
 
     public get isPutDownHand(): boolean {
-        switch(this.state) {
+        switch (this.state) {
             case States.ShowCardsForHeader:
             case States.ShowCardsAndVoting:
             case States.Results:
                 return true;
-            default: 
+            default:
                 return false;
         }
     }
 
     public voteForThisCard(card: string): void {
         if (
-            States.ShowCardsAndVoting === this.state && 
+            States.ShowCardsAndVoting === this.state &&
             card !== this.myCardOnTheDeck
         ) {
             this.socket.emit(ServerEvents.VoteForTheCard, this.roomCode, card);
@@ -311,10 +320,10 @@ export class RoomComponent implements OnInit, OnDestroy {
     }
 
     private openDialogToChangeUserName(): void {
-        this.dialog.open(
-            ChangeUsernameComponent, 
-            { ...this.dialogConfig, data: this.roomCode }
-        );
+        this.dialog.open(ChangeUsernameComponent, {
+            ...this.dialogConfig,
+            data: this.roomCode,
+        });
     }
 
     // * END Dialog Change username functions * //

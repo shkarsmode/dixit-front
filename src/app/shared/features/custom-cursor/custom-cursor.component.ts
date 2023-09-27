@@ -1,10 +1,13 @@
+import { CommonModule } from '@angular/common';
 import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
-import { DeviceUtilityService } from 'src/app/shared/utils/device-utility.service';
+import { DeviceUtilityService } from '@shared/utils';
 
 @Component({
     selector: 'app-custom-cursor',
     templateUrl: './custom-cursor.component.html',
-    styleUrls: ['./custom-cursor.component.scss']
+    styleUrls: ['./custom-cursor.component.scss'],
+	imports: [CommonModule],
+	standalone: true
 })
 export class CustomCursorComponent implements OnInit {
 
