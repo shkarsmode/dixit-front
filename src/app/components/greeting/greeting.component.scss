@@ -459,6 +459,12 @@ section {
     }
 }
 
+@media screen and (max-height: 750px) {
+    .fond {
+        margin-top: -25px;
+    }
+}
+
 @media screen and (max-width: 560px) {
     #medium {
         right: 120px;
