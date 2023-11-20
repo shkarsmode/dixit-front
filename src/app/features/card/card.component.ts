@@ -27,9 +27,6 @@ export class CardComponent implements AfterViewInit {
     private initialPositionLeft: number;
     private initialZIndex: number;
 
-    private initialHeight: number;
-    private initialWidth: number;
-
     public isPreviewCard: boolean = false;;
 
     public readonly pathToDixitCards: string = 'assets/img/dixit/';
@@ -53,12 +50,6 @@ export class CardComponent implements AfterViewInit {
 
         this.previewCardRef.nativeElement.style.left = left + 'px';
         this.previewCardRef.nativeElement.style.top = top + 'px';
-
-        this.initialHeight = height;
-        this.initialWidth = width;
-
-        this.initialPositionTop = top;
-        this.initialPositionLeft = left;
 
         this.initialZIndex = this.hostRef.nativeElement.style.zIndex;
     }

@@ -1,25 +1,25 @@
 @import url('https://fonts.googleapis.com/css2?family=Kaushan+Script&display=swap');
 
 .wrap {
-	display: flex;
-	flex-direction: column;
-	align-items: center;
-	width: 100vw;
-	padding-top: 15px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: 100vw;
+    padding-top: 15px;
 }
 
 .logo-header {
-	display: flex;
-	justify-content: center;
-	width: 100%;
-	padding-top: 20px;
+    display: flex;
+    justify-content: center;
+    width: 100%;
+    padding-top: 20px;
 
-	img {
-		width: 350px;
-		position: absolute;
-		z-index: 1;
-		margin-right: 15px;
-	}
+    img {
+        width: 350px;
+        position: absolute;
+        z-index: 1;
+        margin-right: 15px;
+    }
 }
 
 #choix_univers_pc.desktop_version {
@@ -32,8 +32,8 @@
     background-size: 1920px;
     overflow: hidden;
     transition: all 0.2s ease-out;
-	opacity: 0;
-	animation: show-all-flow 1.5s forwards;
+    opacity: 0;
+    animation: show-all-flow 1.5s forwards;
 }
 
 .fond_mysterium {
@@ -64,40 +64,40 @@
     background-size: 1920px;
     opacity: 0;
 
-	&.tache1 {
-		background-image: url(	https://www.libellud.com/wp-content/themes/libellud-theme/images/dixit/tache-1.png);
-		transition: all 0.15s ease-out 0.4s;
-	}
+    &.tache1 {
+        background-image: url(https://www.libellud.com/wp-content/themes/libellud-theme/images/dixit/tache-1.png);
+        transition: all 0.15s ease-out 0.4s;
+    }
 
-	&.tache2 {
-		background-image: url(https://www.libellud.com/wp-content/themes/libellud-theme/images/dixit/tache-2.png);
-		transition: all 0.15s ease-out 0.35s;
-	}
+    &.tache2 {
+        background-image: url(https://www.libellud.com/wp-content/themes/libellud-theme/images/dixit/tache-2.png);
+        transition: all 0.15s ease-out 0.35s;
+    }
 
-	&.tache3 {
-		background-image: url(https://www.libellud.com/wp-content/themes/libellud-theme/images/dixit/tache-3.png);
-		transition: all 0.15s ease-out 0.3s;
-	}
+    &.tache3 {
+        background-image: url(https://www.libellud.com/wp-content/themes/libellud-theme/images/dixit/tache-3.png);
+        transition: all 0.15s ease-out 0.3s;
+    }
 
-	&.tache4 {
-		background-image: url(https://www.libellud.com/wp-content/themes/libellud-theme/images/dixit/tache-4.png);
-		transition: all 0.15s ease-out 0.25s;
-	}
+    &.tache4 {
+        background-image: url(https://www.libellud.com/wp-content/themes/libellud-theme/images/dixit/tache-4.png);
+        transition: all 0.15s ease-out 0.25s;
+    }
 
-	&.tache5 {
-		background-image: url(https://www.libellud.com/wp-content/themes/libellud-theme/images/dixit/tache-5.png);
-		transition: all 0.15s ease-out 0.2s;
-	}
+    &.tache5 {
+        background-image: url(https://www.libellud.com/wp-content/themes/libellud-theme/images/dixit/tache-5.png);
+        transition: all 0.15s ease-out 0.2s;
+    }
 
-	&.tache6 {
-		background-image: url(https://www.libellud.com/wp-content/themes/libellud-theme/images/dixit/tache-6.png);
-		transition: all 0.15s ease-out 0.15s;
-	}
+    &.tache6 {
+        background-image: url(https://www.libellud.com/wp-content/themes/libellud-theme/images/dixit/tache-6.png);
+        transition: all 0.15s ease-out 0.15s;
+    }
 
-	&.tache7 {
-		background-image: url(https://www.libellud.com/wp-content/themes/libellud-theme/images/dixit/tache-7.png);
-		transition: all 0.15s ease-out 0.1s;
-	}
+    &.tache7 {
+        background-image: url(https://www.libellud.com/wp-content/themes/libellud-theme/images/dixit/tache-7.png);
+        transition: all 0.15s ease-out 0.1s;
+    }
 }
 
 .logo {
@@ -128,40 +128,40 @@
     background-size: 1920px;
     opacity: 1;
 
-	&.tachem1 {
-		background-image: url(https://www.libellud.com/wp-content/themes/libellud-theme/images/dixit/tache--1.png);
-		transition: all 0.15s ease-out 0.35s;
-	}
+    &.tachem1 {
+        background-image: url(https://www.libellud.com/wp-content/themes/libellud-theme/images/dixit/tache--1.png);
+        transition: all 0.15s ease-out 0.35s;
+    }
 
-	&.tachem2 {
-		background-image: url(https://www.libellud.com/wp-content/themes/libellud-theme/images/dixit/tache--2.png);
-		transition: all 0.15s ease-out 0.3s;
-	}
+    &.tachem2 {
+        background-image: url(https://www.libellud.com/wp-content/themes/libellud-theme/images/dixit/tache--2.png);
+        transition: all 0.15s ease-out 0.3s;
+    }
 
-	&.tachem3 {
-		background-image: url(https://www.libellud.com/wp-content/themes/libellud-theme/images/dixit/tache--3.png);
-		transition: all 0.15s ease-out 0.25s;
-	}
+    &.tachem3 {
+        background-image: url(https://www.libellud.com/wp-content/themes/libellud-theme/images/dixit/tache--3.png);
+        transition: all 0.15s ease-out 0.25s;
+    }
 
-	&.tachem4 {
-		background-image: url(https://www.libellud.com/wp-content/themes/libellud-theme/images/dixit/tache--4.png);
-		transition: all 0.15s ease-out 0.2s;
-	}
+    &.tachem4 {
+        background-image: url(https://www.libellud.com/wp-content/themes/libellud-theme/images/dixit/tache--4.png);
+        transition: all 0.15s ease-out 0.2s;
+    }
 
-	&.tachem5 {
-		background-image: url(https://www.libellud.com/wp-content/themes/libellud-theme/images/dixit/tache--5.png);
-		transition: all 0.15s ease-out 0.15s;
-	}
+    &.tachem5 {
+        background-image: url(https://www.libellud.com/wp-content/themes/libellud-theme/images/dixit/tache--5.png);
+        transition: all 0.15s ease-out 0.15s;
+    }
 
-	&.tachem6 {
-		background-image: url(https://www.libellud.com/wp-content/themes/libellud-theme/images/dixit/tache--6.png);
-		transition: all 0.15s ease-out 0.1s;
-	}
+    &.tachem6 {
+        background-image: url(https://www.libellud.com/wp-content/themes/libellud-theme/images/dixit/tache--6.png);
+        transition: all 0.15s ease-out 0.1s;
+    }
 
-	&.tachem7 {
-		background-image: url(https://www.libellud.com/wp-content/themes/libellud-theme/images/dixit/tache--7.png);
-		transition: all 0.15s ease-out 0.05s;
-	}
+    &.tachem7 {
+        background-image: url(https://www.libellud.com/wp-content/themes/libellud-theme/images/dixit/tache--7.png);
+        transition: all 0.15s ease-out 0.05s;
+    }
 }
 
 .conteneur {
@@ -170,34 +170,35 @@
 
 .logo {
 
-	opacity: 1 !important;
+    opacity: 1 !important;
 
-	&.logo-dixit {
-		left: -100px;
-	}
+    &.logo-dixit {
+        left: -100px;
+    }
 
-	&.logo-mysterium {
-		right: -100px;
-	}
+    &.logo-mysterium {
+        right: -100px;
+    }
 }
 
 section {
-	filter: drop-shadow(-50px 0 50px #000000);
+    filter: drop-shadow(-50px 0 50px #000000);
     bottom: -120px;
     position: absolute;
     left: 0px;
     width: 100%;
     height: 188px;
 }
+
 .fond {
-	position: absolute;
+    position: absolute;
     background-color: #5a3a85;
     background-image: url(https://www.libellud.com/wp-content/themes/libellud-theme/images/mysterium/kids/fond-bandeau-mysterium-kids.webp);
     width: 100%;
     height: 100%;
     margin-top: -100px;
     clip-path: path('M0,575Q-.49,312-1,49S202.72,1.88,391,1,768.3,47.14,820,57s264.41,47.51,432,14,251.59-54.79,388-52,281,49,281,49q-.49,253.5-1,507Z');
-	filter: drop-shadow(0 0 50px #000000);
+    filter: drop-shadow(0 0 50px #000000);
 }
 
 .deco {
@@ -229,34 +230,34 @@ section {
     position: absolute;
     bottom: -30px;
     right: 100px;
-    width: 250px!important;
+    width: 250px !important;
     transition: all 1s ease-out;
     transform-origin: bottom;
-	animation: showing .5s ease-out;
+    animation: showing .5s ease-out;
 
-	img {
-		width: 100% !important;
-		height: unset;
-	}
+    img {
+        width: 100% !important;
+        height: unset;
+    }
 }
 
 #medium {
     position: absolute;
     bottom: -78px;
     right: 660px;
-    width: 450px!important;
+    width: 450px !important;
     transition: all 1s ease-out;
-	animation: showing .5s ease-out;
+    animation: showing .5s ease-out;
 
-	img {
-		width: 500px;
-		transform: matrix(1, 0, 0, 1, 24.2118, 13.5795);
-	}
+    img {
+        width: 500px;
+        transform: matrix(1, 0, 0, 1, 24.2118, 13.5795);
+    }
 }
 
 #chateau {
     position: absolute;
-	bottom: 234px;
+    bottom: 234px;
     left: -168px;
     transition: all 0.3s ease-in-out;
 }
@@ -267,148 +268,266 @@ section {
     bottom: -10px;
     left: -105px;
     transition: all 1s ease-out;
-	animation: showing .5s ease-out;
+    animation: showing .5s ease-out;
 }
 
 #persstella {
     position: absolute;
     bottom: 100px;
     left: 550px;
-    width: 400px!important;
+    width: 400px !important;
     transition: all 1s ease-out;
-	animation: showing .5s ease-out;
+    animation: showing .5s ease-out;
 
-	img {
-		height: unset;
-		width: 450px !important;
-	}
+    img {
+        height: unset;
+        width: 450px !important;
+    }
 }
 
 .logo-header img {
-	animation: showing 1s ease;
+    animation: showing 1s ease;
 }
 
 @keyframes showing {
-	0% {
-		transform: scale(0.5);
-		filter: blur(10px);
-	}
+    0% {
+        transform: scale(0.5);
+        filter: blur(10px);
+    }
 
-	100% {
-		transform: scale(1);
-		filter: blur(0px);
-	}
+    100% {
+        transform: scale(1);
+        filter: blur(0px);
+    }
 }
 
 @keyframes show-all-flow {
-	0% {
-		opacity: 0;
-	}
+    0% {
+        opacity: 0;
+    }
 
-	100% {
-		opacity: 1;
-	}
+    100% {
+        opacity: 1;
+    }
 }
 
 .contenue h1 {
-	color: #38343F;
-	font-size: 75px;
-	// font-weight: 700;
-	font-family: 'Kaushan Script', cursive;
-	text-shadow: 0px 0px 15px #fff2cd;
-	margin-bottom: 40px;
-	// -webkit-text-stroke: 1px #fff2cd;
+    color: #38343F;
+    font-size: 75px;
+    // font-weight: 700;
+    font-family: 'Kaushan Script', cursive;
+    text-shadow: 0px 0px 15px #fff2cd;
+    margin-bottom: 40px;
+    // -webkit-text-stroke: 1px #fff2cd;
 }
 
 .contenue {
-	form {
-		display: flex;
-		flex-direction: column;
-	}
+    form {
+        display: flex;
+        flex-direction: column;
+    }
 
-	.wrap-code {
-		display: flex;
-		justify-content: space-between;
-		margin-bottom: 30px;
-	}
+    .wrap-code {
+        display: flex;
+        justify-content: space-between;
+        margin-bottom: 30px;
+    }
 
-	input {
-		font-family: 'Kaushan Script', cursive;
-		text-align: center;
-		background-color: rgba(58, 58, 58, 0.5);
-		border: 1px solid rgba(255, 255, 255, 0.5);
-		width: 50px;
-		height: 50px;
-		border-radius: 8px;
-		outline: none;
-		font-size: 35px;
-		color: white;
-		transition: all .3s;
+    input {
+        font-family: 'Kaushan Script', cursive;
+        text-align: center;
+        background-color: rgba(58, 58, 58, 0.5);
+        border: 1px solid rgba(255, 255, 255, 0.5);
+        width: 50px;
+        height: 50px;
+        border-radius: 8px;
+        outline: none;
+        font-size: 35px;
+        color: white;
+        transition: all .3s;
 
-		&:focus {
-			border: 1px solid rgba(255, 255, 255, 1);
-		}
-	}
+        &:focus {
+            border: 1px solid rgba(255, 255, 255, 1);
+        }
+    }
 
-	button {
-		background-color: #fff5df !important;
-		padding: 10px 20px;
-		border-radius: 17px;
-		letter-spacing: 1.6px;
-		transition: all .4s;
+    button {
+        background-color: #fff5df !important;
+        padding: 10px 20px;
+        border-radius: 17px;
+        letter-spacing: 1.6px;
+        transition: all .4s;
 
-		::ng-deep .mdc-button__label {
-			color: #de8c2a;
-			font-weight: bold;
-			font-size: 20px;
-		}
+        ::ng-deep .mdc-button__label {
+            color: #de8c2a;
+            font-weight: bold;
+            font-size: 20px;
+        }
 
-		&:hover {
-			background-color: white !important;
-		}
-	}
+        &:hover {
+            background-color: white !important;
+        }
+    }
 
-	.join-button {
-		background-color: #18858c !important;
-		::ng-deep .mdc-button__label {
-			color: white;
-		}
+    .join-button {
+        background-color: #18858c !important;
 
-		&:hover {
-			background-color: #126268 !important;
-		}
-	}
+        ::ng-deep .mdc-button__label {
+            color: white;
+        }
+
+        &:hover {
+            background-color: #126268 !important;
+        }
+    }
 }
 
 //  dixit/mysterium on class desktop_version
 
 .dixit {
-	.fond_mysterium {
-		// opacity: 0;
-		// transition: all 0.15s ease-out 0.35s;
-		background-size: 1520px;
-		// background-position: right center;
-	}
+    .fond_mysterium {
+        // opacity: 0;
+        // transition: all 0.15s ease-out 0.35s;
+        background-size: 1520px;
+        // background-position: right center;
+    }
 
-	.tachem {
-		left: 50px !important;
+    .tachem {
+        left: 50px !important;
 
-		&1 {
-			left: 350px !important;
-		}
-	}
+        &1 {
+            left: 350px !important;
+        }
+    }
 }
 
 .mysterium {
 
-	.fond_mysterium {
-		background-size: 1920px;
-		// background-position: right top;
-		transition: all 0.35s ease-out;
-	}
+    .fond_mysterium {
+        background-size: 1920px;
+        // background-position: right top;
+        transition: all 0.35s ease-out;
+    }
 
-	.tachem {
-		left: -308px !important;
-	}
+    .tachem {
+        left: -308px !important;
+    }
 }
 
+@media screen and (max-width: 1200px) {
+    .logo-dixit {
+        display: none;
+    }
+
+    .logo-mysterium {
+        position: fixed;
+        top: 56%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+    }
+
+    .contenue {
+        h1 {
+            line-height: 40px;
+            letter-spacing: 5px;
+        }
+
+        .wrap-code {
+            column-gap: 5px;
+        }
+    }
+
+}
+
+@media screen and (max-width: 900px) {
+    #medium {
+        right: 560px;
+    }
+
+    #persstella {
+        left: 500px;
+    }
+}
+
+@media screen and (max-width: 700px) {
+    #medium {
+        right: 360px;
+    }
+
+    #persstella {
+        left: 300px;
+    }
+}
+
+@media screen and (max-width: 560px) {
+    #medium {
+        right: 120px;
+        bottom: 50px;
+        width: 300px;
+        transform: rotateY(180deg);
+        animation: anim-medium 10s infinite;
+        animation-delay: .5s;
+
+        img {
+            width: 445px !important;
+            height: 600px;
+        }
+    }
+
+    #persstella {
+        left: 120px;
+        bottom: 80px;
+
+        animation: anim-persstella 8s infinite;
+
+        // img {
+        //     width: 350px !important;
+        // }
+    }
+
+    #vase,
+    #bateau {
+        display: none;
+    }
+}
+
+@keyframes anim-medium {
+    from {
+        transform: rotateY(180deg) translateX(0);
+    }
+
+    50% {
+        transform: rotateY(180deg) translate(-20px, -20px);
+    }
+
+    70% {
+        transform: rotateY(180deg) translateX(20px);
+    }
+
+    100% {
+        transform: rotateY(180deg) translateX(0px);
+    }
+}
+
+
+@keyframes anim-persstella {
+    from {
+        transform: translateY(0%);
+    }
+
+    30% {
+        transform: translateY(-20px);
+    }
+
+    50% {
+        transform: translateY(20px);
+    }
+
+    70% {
+        transform: translateY(-20px);
+    }
+
+    to {
+        transform: translateY(0%);
+    }
+}

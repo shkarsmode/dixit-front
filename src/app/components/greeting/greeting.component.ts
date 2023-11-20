@@ -11,6 +11,7 @@ import {
 import { Router } from '@angular/router';
 import { UserService } from '@shared/services';
 import { Socket } from 'ngx-socket-io';
+import { DeviceUtilityService } from '../../shared/utils/device-utility.service';
 
 @Component({
     selector: 'app-greeting',
@@ -18,28 +19,32 @@ import { Socket } from 'ngx-socket-io';
     styleUrls: ['./greeting.component.scss'],
 })
 export class GreetingComponent implements OnInit, AfterViewInit {
+    @ViewChild('vase', { static: true }) public vase: ElementRef;
+    @ViewChild('medium', { static: true }) public medium: ElementRef;
+    @ViewChild('bateau', { static: true }) public bateau: ElementRef;
+    @ViewChild('persstella', { static: true }) public persstella: ElementRef;
+    @ViewChildren('input1, input2, input3, input4, input5') public inputList: QueryList<ElementRef>;
+
     public stateOfMovingSides: string = 'none';
     public roomCode: string = '';
-
     public clientX: number;
     public clientY: number;
 
+    private canAnimateBackground: boolean = true;
     private inputsList: Array<ElementRef>;
     private socket: Socket;
 
-    @ViewChild('medium', { static: true }) medium: ElementRef;
-    @ViewChild('bateau', { static: true }) bateau: ElementRef;
-    @ViewChild('persstella', { static: true }) persstella: ElementRef;
-    @ViewChild('vase', { static: true }) vase: ElementRef;
-    @ViewChildren('input1, input2, input3, input4, input5')
-    inputList: QueryList<ElementRef>;
-
-    constructor(private userService: UserService, private router: Router) {
+    constructor(
+        private readonly userService: UserService,
+        private readonly deviceUtilityService: DeviceUtilityService,
+        private readonly router: Router
+    ) {
         this.socket = userService.socket;
     }
 
     public ngOnInit(): void {
         this.animObjects();
+        this.canAnimateBackground = !this.deviceUtilityService.isMobileDevice;
     }
 
     public ngAfterViewInit(): void {
@@ -54,6 +59,8 @@ export class GreetingComponent implements OnInit, AfterViewInit {
 
     @HostListener('mousemove', ['$event'])
     public onMouseMove(event: MouseEvent): void {
+        if (!this.canAnimateBackground) return;
+
         this.clientX = event.clientX;
         this.clientY = event.clientY;
 
@@ -118,6 +125,26 @@ export class GreetingComponent implements OnInit, AfterViewInit {
         });
     }
 
+    public generateIdForUser(): string {
+        const timestamp = Date.now().toString();
+        const randomNum = Math.floor(Math.random() * 9000) + 1000;
+        const id = timestamp + randomNum;
+
+        return id;
+    }
+
+    public async createRoom(): Promise<void> {
+        const roomCode = this.generateUniqueRoomCode();
+        await this.socket.emit('createRoom', roomCode);
+
+        this.router.navigate(['/rooms', roomCode]);
+    }
+
+    public joinRoom(): void {
+        if (!this.roomCode) return;
+        this.router.navigate(['/rooms', this.roomCode]);
+    }
+
     private animObjects(): void {
         const windowWidth = window.innerWidth;
         const windowHeight = window.innerHeight;
@@ -137,26 +164,6 @@ export class GreetingComponent implements OnInit, AfterViewInit {
         this.persstella.nativeElement.style.transform = `translate(${-moveX}px, ${-moveY}px)`;
 
         requestAnimationFrame(this.animObjects.bind(this));
-    }
-
-    public generateIdForUser(): string {
-        const timestamp = Date.now().toString();
-        const randomNum = Math.floor(Math.random() * 9000) + 1000;
-        const id = timestamp + randomNum;
-
-        return id;
-    }
-
-    public async createRoom(): Promise<void> {
-        const roomCode = this.generateUniqueRoomCode();
-        await this.socket.emit('createRoom', roomCode);
-
-        this.router.navigate(['/rooms', roomCode]);
-    }
-
-    public joinRoom(): void {
-        if (!this.roomCode) return;
-        this.router.navigate(['/rooms', this.roomCode]);
     }
 
     private generateUniqueRoomCode(): string {
