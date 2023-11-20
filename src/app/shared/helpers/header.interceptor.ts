@@ -9,10 +9,10 @@ import { Observable } from 'rxjs';
 
 @Injectable()
 export class HeaderInterceptor implements HttpInterceptor {
-
-    constructor() {}
-
-    intercept(request: HttpRequest<unknown>, next: HttpHandler): Observable<HttpEvent<unknown>> {
+    public intercept(
+        request: HttpRequest<unknown>, 
+        next: HttpHandler
+    ): Observable<HttpEvent<unknown>> {
         // Add your headers here
         const headers = request.headers
             .set('ngrok-skip-browser-warning', '69420')

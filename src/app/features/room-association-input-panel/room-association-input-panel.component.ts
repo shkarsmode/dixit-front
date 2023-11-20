@@ -6,9 +6,10 @@ import { Component, EventEmitter, Output } from '@angular/core';
     styleUrls: ['./room-association-input-panel.component.scss'],
 })
 export class RoomAssociationInputPanelComponent {
-    public association: string;
-    @Output() associationChanged: EventEmitter<string> = new EventEmitter();
+    @Output() 
+    private associationChanged: EventEmitter<string> = new EventEmitter();
 
-    public onAssociationChange = () =>
-        this.associationChanged.emit(this.association);
+    public association: string;
+
+    public onAssociationChange = () => this.associationChanged.emit(this.association);
 }

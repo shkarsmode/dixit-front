@@ -38,11 +38,11 @@ export class RoomComponent implements OnInit, OnDestroy {
     private destroy$: Subject<void> = new Subject();
 
     constructor(
-        private route: ActivatedRoute,
-        private router: Router,
-        private deskService: DeskService,
-        private userService: UserService,
-        private dialog: MatDialog
+        private readonly route: ActivatedRoute,
+        private readonly router: Router,
+        private readonly deskService: DeskService,
+        private readonly userService: UserService,
+        private readonly dialog: MatDialog
     ) {
         this.socket = userService.socket;
     }
@@ -150,7 +150,7 @@ export class RoomComponent implements OnInit, OnDestroy {
         }
     }
 
-    private getRandomIndex(max: number) {
+    private getRandomIndex(max: number): number {
         return Math.floor(Math.random() * max);
     }
 

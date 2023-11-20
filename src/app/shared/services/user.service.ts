@@ -6,7 +6,6 @@ import { Socket } from 'ngx-socket-io';
     providedIn: 'root'
 })
 export class UserService {
-
     public user: IUser;
 
     constructor(

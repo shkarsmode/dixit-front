@@ -4,10 +4,9 @@ import { Directive, HostListener, Renderer2 } from '@angular/core';
 	selector: '[activeCursor]'
 })
 export class ActiveCursorDirective {
-
 	private cursor: HTMLDivElement | null = null;
 
-	constructor(private renderer: Renderer2) {}
+	constructor(private readonly renderer: Renderer2) {}
 
 	@HostListener('mouseenter') 
 	public onMouseEnter(): void {

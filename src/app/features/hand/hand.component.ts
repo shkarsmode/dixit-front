@@ -19,7 +19,7 @@ export class HandComponent implements OnInit {
     @Input() public cardsOnTheTable: string[] = [];
     @Input() public hand: string[];
     @Input() public state: States;
-    @Output() chooseCard: EventEmitter<string> = new EventEmitter();
+    @Output() private chooseCard: EventEmitter<string> = new EventEmitter();
 
     @Input()
     @HostBinding('class.put-down')

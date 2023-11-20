@@ -21,9 +21,14 @@ import { Subscription, interval, takeWhile } from 'rxjs';
 })
 export class DeskComponent implements OnChanges, OnInit, OnDestroy {
     @Input() public cards: string[] = [];
+    @Input() public association: string = '';
     @Input() public cardsForBack: string[] = [];
-    @Input() public results: IResults = [];
+    @Input() public myCardOnTheDeck: string = '';
     @Input() public users: IUser[] = [];
+    @Input() public results: IResults = [];
+    @Input() public state: States = States.NotStarted;
+
+    @ViewChild('wrapCards', { static: false }) wrapCards: ElementRef;
 
     // @Input() public isShowCards: boolean = false;
     // @Input() public isWaitForHeader: boolean = false;
@@ -31,15 +36,7 @@ export class DeskComponent implements OnChanges, OnInit, OnDestroy {
     // @Input() public isResults: boolean = false;
     // @Input() public isHeader: boolean = false;
 
-    @Input() public association: string = '';
-    @Input() public myCardOnTheDeck: string = '';
-
-    @Input() public state: States = States.NotStarted;
-
-    @ViewChild('wrapCards', { static: false }) wrapCards: ElementRef;
-
     public readonly States: typeof States = States;
-
     public isRotateCards: boolean = false;
 
     @Output() public voteCard: EventEmitter<string> = new EventEmitter();
@@ -87,112 +84,11 @@ export class DeskComponent implements OnChanges, OnInit, OnDestroy {
         }
     }
 
-    private checkOnMobileDevice(): void {
-        this.isMobileDevice = this.deviceUtilityService.isMobileDevice;
-    }
-
-    private retryInitionOfDefaultPositionAndSizeOfCard(): void {
-        let success = false;
-        interval(500)
-            .pipe(takeWhile(() => !success))
-            .subscribe(() => {
-                if (this.wrapCards) {
-                    success = true;
-                    this.initDefaultPositionAndSizeOfCard();
-                    return;
-                }
-            });
-    }
-
-    private async initDefaultPositionAndSizeOfCard(): Promise<void> {
-        if (!this.wrapCards) {
-            this.retryInitionOfDefaultPositionAndSizeOfCard();
-            return;
-        }
-
-        await new Promise((resolve) => setTimeout(resolve, 1000));
-        this.cardsInitialValues = [];
-
-        const arrayOfDomCards = Array.from(
-            this.wrapCards.nativeElement.children
-        ) as Array<HTMLDivElement>;
-
-        arrayOfDomCards.forEach((card: HTMLDivElement) => {
-            const { top, left, width, height } = card.getBoundingClientRect();
-            const zIndex = card.style.zIndex;
-            this.cardsInitialValues.push({
-                top,
-                left,
-                width,
-                height,
-                zIndex,
-                cardElement: card,
-            });
-        });
-    }
-
     public moveToNextRound(): void {
         if (this.isEmittedNextRound) return;
 
         this.nextRound.emit();
         this.isEmittedNextRound = true;
-    }
-
-    private subscribeOnNewRound(): void {
-        const sub = this.deskService.newRound$.subscribe(
-            this.clearVariablesForNewRound.bind(this)
-        );
-
-        this.subscriptions.push(sub);
-    }
-
-    private clearVariablesForNewRound(): void {
-        this.isEmittedNextRound = false;
-        this.isRotateCards = false;
-    }
-
-    private voteForThisCard(card: string): void {
-        if (!this.isMobileDevice) {
-            if (this.hasMatcheResultsAndUsersLength) return;
-            this.markUsersVote(card);
-            this.voteCard.emit(card);
-
-            return;
-        }
-
-        if (
-            this.cardsInitialValues.length !== this.cards.length ||
-            this.myCardOnTheDeck === card
-        )
-            return;
-
-        if (this.previewCard) {
-            this.backToInitialPosition(this.previewCard);
-            this.voteForThisCard(card);
-            return;
-        }
-
-        this.previewCard = card;
-        const cardIndex = this.cards.findIndex(
-            (cardFromArray) => card === cardFromArray
-        );
-        const cardToPreview = this.cardsInitialValues[cardIndex];
-
-        const windowHeight = window.innerHeight;
-        const windowWidth = window.innerWidth;
-
-        const diffHeight =
-            windowHeight / 2 -
-            cardToPreview.top -
-            cardToPreview.height / 2 -
-            20;
-        const diffWidth =
-            windowWidth / 2 - cardToPreview.left - cardToPreview.width / 2;
-
-        cardToPreview.cardElement.style.top = diffHeight + 'px';
-        cardToPreview.cardElement.style.left = diffWidth + 'px';
-        cardToPreview.cardElement.style.transform = 'scale(2)';
-        cardToPreview.cardElement.style.zIndex = '11';
     }
 
     public async backToInitialPosition(card: string): Promise<void> {
@@ -292,6 +188,107 @@ export class DeskComponent implements OnChanges, OnInit, OnDestroy {
     private get hasMatcheResultsAndUsersLength(): boolean {
         if (!this.results || !this.users) return false;
         return this.results.length === this.users.length;
+    }
+
+    private retryInitionOfDefaultPositionAndSizeOfCard(): void {
+        let success = false;
+        interval(500)
+            .pipe(takeWhile(() => !success))
+            .subscribe(() => {
+                if (this.wrapCards) {
+                    success = true;
+                    this.initDefaultPositionAndSizeOfCard();
+                    return;
+                }
+            });
+    }
+
+    private async initDefaultPositionAndSizeOfCard(): Promise<void> {
+        if (!this.wrapCards) {
+            this.retryInitionOfDefaultPositionAndSizeOfCard();
+            return;
+        }
+
+        await new Promise((resolve) => setTimeout(resolve, 1000));
+        this.cardsInitialValues = [];
+
+        const arrayOfDomCards = Array.from(
+            this.wrapCards.nativeElement.children
+        ) as Array<HTMLDivElement>;
+
+        arrayOfDomCards.forEach((card: HTMLDivElement) => {
+            const { top, left, width, height } = card.getBoundingClientRect();
+            const zIndex = card.style.zIndex;
+            this.cardsInitialValues.push({
+                top,
+                left,
+                width,
+                height,
+                zIndex,
+                cardElement: card,
+            });
+        });
+    }
+
+    private checkOnMobileDevice(): void {
+        this.isMobileDevice = this.deviceUtilityService.isMobileDevice;
+    }
+
+    private subscribeOnNewRound(): void {
+        const sub = this.deskService.newRound$.subscribe(
+            this.clearVariablesForNewRound.bind(this)
+        );
+
+        this.subscriptions.push(sub);
+    }
+
+    private clearVariablesForNewRound(): void {
+        this.isEmittedNextRound = false;
+        this.isRotateCards = false;
+    }
+
+    private voteForThisCard(card: string): void {
+        if (!this.isMobileDevice) {
+            if (this.hasMatcheResultsAndUsersLength) return;
+            this.markUsersVote(card);
+            this.voteCard.emit(card);
+
+            return;
+        }
+
+        if (
+            this.cardsInitialValues.length !== this.cards.length ||
+            this.myCardOnTheDeck === card
+        )
+            return;
+
+        if (this.previewCard) {
+            this.backToInitialPosition(this.previewCard);
+            this.voteForThisCard(card);
+            return;
+        }
+
+        this.previewCard = card;
+        const cardIndex = this.cards.findIndex(
+            (cardFromArray) => card === cardFromArray
+        );
+        const cardToPreview = this.cardsInitialValues[cardIndex];
+
+        const windowHeight = window.innerHeight;
+        const windowWidth = window.innerWidth;
+
+        const diffHeight =
+            windowHeight / 2 -
+            cardToPreview.top -
+            cardToPreview.height / 2 -
+            20;
+        const diffWidth =
+            windowWidth / 2 - cardToPreview.left - cardToPreview.width / 2;
+
+        cardToPreview.cardElement.style.top = diffHeight + 'px';
+        cardToPreview.cardElement.style.left = diffWidth + 'px';
+        cardToPreview.cardElement.style.transform = 'scale(2)';
+        cardToPreview.cardElement.style.zIndex = '11';
     }
 
     public ngOnDestroy(): void {
